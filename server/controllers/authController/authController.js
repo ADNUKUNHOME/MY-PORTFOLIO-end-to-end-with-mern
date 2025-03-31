@@ -11,7 +11,7 @@ const registerUser = async (req, res) => {
     const { userName, email, password } = req.body;
 
     if (!userName || !email || !password) {
-        return res.status(500).json({
+        return res.status(400).json({
             success: false,
             message: 'Invalid Data Provided!'
         })
@@ -21,7 +21,7 @@ const registerUser = async (req, res) => {
 
         const checkUser = await User.findOne({ email });
         if (checkUser) {
-            return res.status(500).json({
+            return res.status(400).json({
                 success: false,
                 message: 'User is already exist with same email id. Please Login!'
             })
@@ -52,11 +52,11 @@ const registerUser = async (req, res) => {
         })
 
     } catch (e) {
-        console.log(e);
-        res.status(404).json({
+        console.error("Error in loginUser:", e);
+        res.status(500).json({
             success: false,
-            message: 'some error occured!'
-        })
+            message: e.message || 'Internal Server Error'
+        });
     }
 }
 
@@ -67,7 +67,7 @@ const loginUser = async (req, res) => {
     const { email, password } = req.body;
 
     if (!email || !password) {
-        return res.status(500).json({
+        return res.status(400).json({
             success: false,
             message: 'Invalid Data Provided!'
         })
@@ -77,7 +77,7 @@ const loginUser = async (req, res) => {
 
         const user = await User.findOne({ email });
         if (!user) {
-            return res.status(500).json({
+            return res.status(400).json({
                 success: false,
                 message: 'User is not exist. Please register first!'
             })
@@ -85,7 +85,7 @@ const loginUser = async (req, res) => {
 
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
-            return res.status(500).json({
+            return res.status(400).json({
                 success: false,
                 message: 'Password is incorrect!'
             })
@@ -112,11 +112,11 @@ const loginUser = async (req, res) => {
         })
 
     } catch (e) {
-        console.log(e);
-        res.status(404).json({
+        console.error("Error in loginUser:", e);
+        res.status(500).json({
             success: false,
-            message: 'some error occured!'
-        })
+            message: e.message || 'Internal Server Error'
+        });
     }
 }
 
@@ -130,11 +130,11 @@ const logoutUser = async (req, res) => {
             message: 'Logged Out SuccessFully!'
         })
     } catch (e) {
-        console.log(e);
-        res.status(404).json({
+        console.error("Error in loginUser:", e);
+        res.status(500).json({
             success: false,
-            message: 'some error occured!'
-        })
+            message: e.message || 'Internal Server Error'
+        });
     }
 }
 
@@ -157,7 +157,7 @@ const sendVerifyOtp = async (req, res) => {
         const otp = String(Math.floor(100000 + Math.random() * 900000));
 
         user.verifyOtp = otp;
-        user.verifyOtpExpireAt = Date.now() + 60 * 60 * 1000;
+        user.verifyOtpExpireAt = Date.now() + 24 * 60 * 60 * 1000;
 
         await user.save();
 
@@ -177,11 +177,11 @@ const sendVerifyOtp = async (req, res) => {
 
 
     } catch (e) {
-        console.log(e);
-        res.status(404).json({
+        console.error("Error in loginUser:", e);
+        res.status(500).json({
             success: false,
-            message: 'some error occured!'
-        })
+            message: e.message || 'Internal Server Error'
+        });
     }
 }
 
@@ -213,7 +213,7 @@ const verifyEmail = async (req, res) => {
             })
         }
 
-        if(user.verifyOtpExpireAt > Date.now()) {
+        if(user.verifyOtpExpireAt < Date.now()) {
             return res.status(500).json({
                 success: false,
                 message: 'OTP expired!'
@@ -232,13 +232,137 @@ const verifyEmail = async (req, res) => {
         })
 
     } catch (e) {
-        console.log(e);
-        res.status(404).json({
+        console.error("Error in loginUser:", e);
+        res.status(500).json({
             success: false,
-            message: 'some error occured!'
-        })
+            message: e.message || 'Internal Server Error'
+        });
     }
 }
 
 
-module.exports = { registerUser, loginUser, logoutUser, sendVerifyOtp, verifyEmail }
+const isAuthenticated = async (req, res) => {
+    try {
+        return res.status(200).json({
+            success: true,
+            message: 'User is authenticated!'
+        })
+    } catch (e) {
+        console.error("Error in loginUser:", e);
+        res.status(500).json({
+            success: false,
+            message: e.message || 'Internal Server Error'
+        });
+    }
+}
+
+
+//Endpoind for password reset
+
+const resetPasswordOtp  = async (req, res) => {    
+    const {email} = req.body;
+    if(!email) {
+        return  res.status(400).json({
+            success: false,
+            message: 'Email id is required'
+        })
+    }
+
+    try {
+
+        const user = await User.findOne({email});
+        if(!user) {
+            return  res.status(400).json({
+                success: false,
+                message: 'User is not Exist! Please Enter a valid Email Address'
+            })
+        }
+
+        const otp = String(Math.floor(100000 + Math.random() * 900000));
+
+        user.resetOtp = otp;
+        user.resetOtpExpireAt = Date.now() + 24 * 60 * 60 * 1000;
+
+        await user.save();
+
+        //Sending Verificarion OTP
+        const mailOptions = {
+            from: process.env.SENDER_EMAIL,
+            to: user.email,
+            subject: 'Password reset OTP',
+            text: `Your OTP is ${otp}. Reset Your password with this OTP`
+        }
+        await sendEmail(mailOptions);
+
+        return  res.status(200).json({
+            success: true,
+            message: 'OTP sent to the email id'
+        }) 
+        
+    } catch (e) {
+        console.error("Error in reset otp:", e);
+        res.status(500).json({
+            success: false,
+            message: e.message || 'Internal Server Error'
+        });
+    }
+}
+
+const passwordReset = async (req, res) => {
+
+    const {email, otp, newPassword} = req.body;
+    if(!email || !otp || !newPassword) {
+        return res.status(400).json({
+            success: false,
+            message: 'Invalid data Provided!'
+        })
+    }
+
+    try {
+        const user = await User.findOne({email});
+        if(!user) {
+            return  res.status(400).json({
+                success: false,
+                message: 'User is not Exist! Please Enter a valid Email Address'
+            })
+        }
+
+        if(user.resetOtp === '' || user.resetOtp !== otp) {
+            return  res.status(400).json({
+                success: false,
+                message: 'Incorrect  OTP provided'
+            })
+        }
+
+        
+        if(user.resetOtpExpireAt < Date.now()) {
+            return res.status(400).json({
+                success: false,
+                message: 'OTP expired!'
+            })
+        }
+
+        const hashedPassword = await bcrypt.hash(newPassword,10);
+
+        user.password = hashedPassword;
+        user.resetOtp = '';
+        user.resetOtpExpireAt = 0;
+
+        await user.save();
+
+        return res.status(200).json({
+            success: true,
+            message: 'Password has been reset Successfully'
+        })
+
+    } catch (e) {
+        console.error("Error in resetPassword:", e);
+        res.status(500).json({
+            success: false,
+            message: e.message || 'Internal Server Error'
+        });
+    }
+}
+
+
+module.exports = { registerUser, loginUser, logoutUser, sendVerifyOtp, verifyEmail, isAuthenticated, resetPasswordOtp, passwordReset }

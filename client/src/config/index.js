@@ -39,3 +39,49 @@ export const loginFormControls = [
         type: 'password',
     }
 ]
+
+
+export const userViewHeaderMenuItems = [
+    {
+        neme: 'home',
+        id: 'home',
+        label: 'Home',
+        path: '/user/home',
+        tooltip: 'All In One'
+    },
+    {
+        neme: 'about',
+        id: 'about',
+        label: 'About',
+        path: '/user/about',
+        tooltip: 'About Me'
+    },
+    {
+        neme: 'projects',
+        id: 'projects',
+        label: 'Projects',
+        path: '/user/projects',
+        tooltip: 'My HardWorks'
+    },
+    {
+        neme: 'skills',
+        id: 'skills',
+        label: 'Skills',
+        path: '/user/skills',
+        tooltip: 'What I Gained'
+    },
+    {
+        neme: 'blogs',
+        id: 'blogs',
+        label: 'Blogs',
+        path: '/user/blogs',
+        tooltip: "Let's Think"
+    },
+    {
+        neme: 'contact',
+        id: 'contact',
+        label: 'Contact',
+        path: '/user/contact',
+        tooltip: "Let's Connect"
+    },
+]

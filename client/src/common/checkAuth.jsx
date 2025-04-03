@@ -1,13 +1,18 @@
-const { useLocation, Navigate, useNavigate } = require("react-router-dom");
+import { useLocation, Navigate } from "react-router-dom";
 
-const location = useLocation();
-const naivagate = useNavigate();
 
 function CheckAuth({isAuthenticated, user, children}) {
 
-    if(!isAuthenticated && location.pathname === '*') {
-        Navigate('/auth/login');
+    const location = useLocation();
+
+    if(!isAuthenticated && !(location.pathname.includes('/login') || location.pathname.includes("/register") || location.pathname.includes("/reset-password"))) {
+        return <Navigate to='/auth/login' replace/>
     }
+
+    if(isAuthenticated && (location.pathname.includes('/login') || location.pathname.includes('/register'))) {
+        return <Navigate to='/user/home' replace/>
+    }
+    return children;
 }
 
 export default CheckAuth;

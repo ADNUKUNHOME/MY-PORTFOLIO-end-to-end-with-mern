@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "../../components/ui/card"
 import { Separator } from "@/components/ui/separator"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import CommonForm from "@/common/CommonForm"
 import { loginFormControls } from "@/config"
 import { useState } from "react"
@@ -19,6 +19,7 @@ const Login = () => {
 
     const [formData, setFormData] = useState(initialState);
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const { toast } = useToast();
 
     function onSubmit(event) {
@@ -34,7 +35,8 @@ const Login = () => {
             if(data?.payload?.success) {
                 toast({
                     title: data?.payload?.message
-                })               
+                })       
+                navigate('/user/home');
             } else {
                 toast({
                     title: "Error",

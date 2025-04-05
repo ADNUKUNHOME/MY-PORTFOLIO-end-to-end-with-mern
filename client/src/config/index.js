@@ -23,6 +23,7 @@ export const registerFormControls = [
 ]
 
 
+
 export const loginFormControls = [
     {
         name: 'email',
@@ -83,5 +84,53 @@ export const userViewHeaderMenuItems = [
         label: 'Contact',
         path: '/user/contact',
         tooltip: "Let's Connect"
+    },
+]
+
+export const AboutCardDialogContent = [
+    {
+       name: "Who I Am",
+       heading: "About Me",
+       description: "I am Muhammad Adnan. From India, kerala. After my Plus Two, I initially enrolled in a Polytechnic course in Computer Engineering. However, I realized that a traditional academic path wasn't the right fit for me, so I decided to pursue self-learning in the field of programming and web development. I have since gained experience whith front-end and back-end technologies."
+    },
+    {
+       name: "Tech Stack",
+       heading: "What I Gained",
+       description: "My name is Amjad . From kunhome. learning in kunhme higher secondary school kunhome. wayanad keral india"
+    },
+    {
+       name: "My Journey",
+       heading: "My Way",
+       description: "I am Muhammad Adnan. From India, kerala. After my Plus Two, I initially enrolled in a Polytechnic course in Computer Engineering. However, I realized that a traditional academic path wasn't the right fit for me, so I decided to pursue self-learning in the field of programming and web development. I have since gained experience whith front-end and back-end technologies."
+    },
+    {
+       name: "Education",
+       heading: "Education",
+       description: "I am Muhammad Adnan. From India, kerala. After my Plus Two, I initially enrolled in a Polytechnic course in Computer Engineering. However, I realized that a traditional academic path wasn't the right fit for me, so I decided to pursue self-learning in the field of programming and web development. I have since gained experience whith front-end and back-end technologies."
+    },
+    {
+       name: "Hobbies",
+       heading: "Interested",
+       description: "I am Muhammad Adnan. From India, kerala. After my Plus Two, I initially enrolled in a Polytechnic course in Computer Engineering. However, I realized that a traditional academic path wasn't the right fit for me, so I decided to pursue self-learning in the field of programming and web development. I have since gained experience whith front-end and back-end technologies."
+    },
+    {
+       name: "Current Focus",
+       heading: "Current Focus",
+       description: "I am Muhammad Adnan. From India, kerala. After my Plus Two, I initially enrolled in a Polytechnic course in Computer Engineering. However, I realized that a traditional academic path wasn't the right fit for me, so I decided to pursue self-learning in the field of programming and web development. I have since gained experience whith front-end and back-end technologies."
+    },
+    {
+       name: "Let's Connect",
+       heading: "Let's Connect",
+       description: "I am Muhammad Adnan. From India, kerala. After my Plus Two, I initially enrolled in a Polytechnic course in Computer Engineering. However, I realized that a traditional academic path wasn't the right fit for me, so I decided to pursue self-learning in the field of programming and web development. I have since gained experience whith front-end and back-end technologies."
+    },
+    {
+       name: "Journey",
+       heading: "Journey",
+       description: "I am Muhammad Adnan. From India, kerala. After my Plus Two, I initially enrolled in a Polytechnic course in Computer Engineering. However, I realized that a traditional academic path wasn't the right fit for me, so I decided to pursue self-learning in the field of programming and web development. I have since gained experience whith front-end and back-end technologies."
+    },
+    {
+       name: "Philosophy",
+       heading: "My Thoughts",
+       description: "I am Muhammad Adnan. From India, kerala. After my Plus Two, I initially enrolled in a Polytechnic course in Computer Engineering. However, I realized that a traditional academic path wasn't the right fit for me, so I decided to pursue self-learning in the field of programming and web development. I have since gained experience whith front-end and back-end technologies."
     },
 ]

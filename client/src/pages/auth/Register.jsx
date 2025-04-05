@@ -32,12 +32,17 @@ const Register = () => {
       })
     } else {
 
-    dispatch(registerUser(formData)).then((data) => {
-        if(data?.payload?.success) {
+      dispatch(registerUser(formData)).then((data) => {
+        if (data?.payload?.success) {
           toast({
-            title: data?.payload?.message
+            title: data?.payload?.message  || "Registration successful"
           })
-          navigate('/auth/login');
+          const user = data?.payload?.data;
+          if(user.isAccountVerified) {
+            navigate('/auth/login');
+          } else {
+            navigate('/auth/verify-email');
+          }
         } else {
           toast({
             title: "Error",
@@ -45,8 +50,8 @@ const Register = () => {
             variant: "destructive",
           })
         }
-    })
-  }
+      })
+    }
   }
 
 

@@ -109,7 +109,7 @@ const UserHeader = () => {
                                 <TooltipTrigger asChild>
                                     <Label
                                         onClick={() => handleNavigate(menuItem)}
-                                        className='text-sm font-medium cursor-pointer text-black dark:text-white hover:border-b-2 hover:border-sky-500 pb-1 dark:hover:border-purple-950'
+                                        className='text-sm font-medium cursor-pointer text-black dark:text-white hover:border-b-2 hover:border-sky-500 pb-1 dark:hover:border-red-700'
                                         key={menuItem.id} >
                                         {menuItem.label}
                                     </Label>

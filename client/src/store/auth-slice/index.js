@@ -14,10 +14,17 @@ const initialState = {
 }
 
 
-export const registerUser = createAsyncThunk('/auth/register', async (formData) => {
-    const response = await axios.post('http://localhost:5000/api/auth/register', formData);
-    return response.data;
+export const registerUser = createAsyncThunk('/auth/register', async (formData, { rejectWithValue }) => {
+    try {
+        const response = await axios.post('http://localhost:5000/api/auth/register', formData);
+        return response.data;
+    } catch (error) {
+        console.error("Login Error:", error.response?.data);
+
+        return rejectWithValue(error.response?.data || { message: "Something went wrong!" });
+    }
 });
+
 
 export const loginUser = createAsyncThunk('/auth/loginUser', async (formData, { rejectWithValue }) => {
     try {
@@ -31,19 +38,38 @@ export const loginUser = createAsyncThunk('/auth/loginUser', async (formData, { 
 });
 
 
-export const logoutUser = createAsyncThunk('/auth/logoutUser', async () => {
-    const response = await axios.post('http://localhost:5000/api/auth/logout');
-    return response.data;
+export const logoutUser = createAsyncThunk('/auth/logoutUser', async (_, { rejectWithValue }) => {
+    try {
+        const response = await axios.post('http://localhost:5000/api/auth/logout');
+        return response.data;
+    } catch (error) {
+        console.error("Login Error:", error.response?.data);
+
+        return rejectWithValue(error.response?.data || { message: "Something went wrong!" });
+    }
 });
 
-export const sendVerifyOtp = createAsyncThunk('/auth/sendVerifyOtp', async (userId) => {
-    const response = await axios.post('http://localhost:5000/api/auth/send-verify-otp', userId);
-    return response.data;
+export const sendVerifyOtp = createAsyncThunk('/auth/sendVerifyOtp', async (email, { rejectWithValue }) => {
+    try {
+        const response = await axios.post('http://localhost:5000/api/auth/send-verify-otp', email);
+        return response.data;
+    } catch (error) {
+        console.error("Login Error:", error.response?.data);
+
+        return rejectWithValue(error.response?.data || { message: "Something went wrong!" });
+    }
 });
 
-export const emailVerify = createAsyncThunk('/auth/emailVerify', async ({ userId, otp }) => {
-    const response = await axios.post('http://localhost:5000/api/auth/verify-account', { userId, otp });
-    return response.data;
+export const emailVerify = createAsyncThunk('/auth/emailVerify', async ( {email, otp} , { rejectWithValue }) => {
+    console.log('email : ', email, 'otp : ', otp );
+    try {
+        const response = await axios.post('http://localhost:5000/api/auth/verify-account', { email, otp });
+        return response.data;
+    } catch (error) {
+        console.error("Login Error:", error.response?.data);
+
+        return rejectWithValue(error.response?.data || { message: "Something went wrong!" });
+    }
 });
 
 
@@ -83,7 +109,7 @@ const authSlice = createSlice({
             .addCase(registerUser.fulfilled, (state, action) => {
                 state.isLoading = false;
                 state.isAuthenticated = action.payload.success ? true : false
-                state.user = action.payload.success ? action.payload.user : null
+                state.user = action.payload.success ? action.payload.user : null;
             })
             .addCase(registerUser.rejected, (state, action) => {
                 state.isLoading = false

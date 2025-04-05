@@ -144,9 +144,15 @@ const logoutUser = async (req, res) => {
 const sendVerifyOtp = async (req, res) => {
     try {
 
-        const { userId } = req.body;
+        const { email } = req.body;
 
-        const user = await User.findById(userId);
+        const user = await User.findOne({email});
+        if(!user) {
+            return res.status(500).json({
+                success: false,
+                message: 'User is not Exist! Please try again.'
+            })
+        }
         if (user.isAccountVerified) {
             return res.status(500).json({
                 success: false,
@@ -188,16 +194,16 @@ const sendVerifyOtp = async (req, res) => {
 const verifyEmail = async (req, res) => {
     try {
 
-        const { userId, otp } = req.body;
+        const { email, otp } = req.body;
 
-        if (!userId || !otp) {
+        if (!email || !otp) {
             return res.status(500).json({
                 success: false,
                 message: 'Invalid Details Provided'
             })
         }
 
-        const user = await User.findById(userId);
+        const user = await User.findOne({email});
 
         if(!user) {
             return res.status(500).json({
@@ -232,7 +238,7 @@ const verifyEmail = async (req, res) => {
         })
 
     } catch (e) {
-        console.error("Error in loginUser:", e);
+        console.error("Error in verifyEmail:", e);
         res.status(500).json({
             success: false,
             message: e.message || 'Internal Server Error'

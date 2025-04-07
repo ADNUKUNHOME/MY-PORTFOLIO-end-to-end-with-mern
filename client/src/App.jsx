@@ -13,6 +13,10 @@ import Skills from './pages/user/Skills'
 import BlogUser from './pages/user/BlogUser'
 import Contact from './pages/user/Contact'
 import EmailVerify from './pages/auth/emailVerify'
+import AdminDashboard from './pages/admin/dashboard'
+import AdminLayout from './components/adminView/Layout'
+import AdminProjects from './pages/admin/Projects'
+import AdminSkills from './pages/admin/Skills'
 
 function App() {
 
@@ -21,7 +25,7 @@ function App() {
       <Routes>
         <Route path='/auth' element={
           // <CheckAuth>
-            <Layout />
+          <Layout />
           // </CheckAuth>
         }>
           <Route path='login' element={<Login />} />
@@ -29,13 +33,20 @@ function App() {
           <Route path='reset-password' element={<ResetPassword />} />
           <Route path='verify-email' element={<EmailVerify />} />
         </Route>
-        <Route path='/user' element={<UserLayout />}>
+        <Route path='/user' element={
+          <UserLayout />
+        }>
           <Route path='home' element={<Home />} />
           <Route path='about' element={<About />} />
           <Route path='projects' element={<Projects />} />
           <Route path='skills' element={<Skills />} />
           <Route path='blogs' element={<BlogUser />} />
           <Route path='contact' element={<Contact />} />
+        </Route>
+        <Route path='/admin' element={<AdminLayout />}>
+          <Route path='dashboard' element={<AdminDashboard />} />
+          <Route path='projects' element={<AdminProjects />} />
+          <Route path='Skills' element={<AdminSkills />} />
         </Route>
       </Routes>
     </div>

@@ -17,6 +17,7 @@ const UserHeader = () => {
 
     const { user } = useSelector(state => state.auth);
     const navigate = useNavigate();
+    const [sheetOpen, setSheetOpen] = useState(false);
 
 
     const RightHeaderContent = () => {
@@ -98,6 +99,7 @@ const UserHeader = () => {
 
         const handleNavigate = (getMenuItem) => {
             navigate(getMenuItem.path);
+            setSheetOpen(false);
         }
 
         return <nav className="flex flex-col mb-3 lg:mb-0 lg:items-center gap-6 lg:flex-row">
@@ -134,7 +136,7 @@ const UserHeader = () => {
                 <Link to="/user/home" className="flex items-center gap-2 text-black dark:text-white" >
                     <span className="font-bold">KNOWME</span>
                 </Link>
-                <Sheet>
+                <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
                     <SheetTrigger asChild >
                         <Button variant='outline' size='icon' className='lg:hidden text-black dark:text-white'>
                             <Menu className="w-6 h-6" />

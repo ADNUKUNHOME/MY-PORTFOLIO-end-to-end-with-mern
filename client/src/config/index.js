@@ -96,7 +96,7 @@ export const AboutCardDialogContent = [
     {
        name: "Tech Stack",
        heading: "What I Gained",
-       description: "My name is Amjad . From kunhome. learning in kunhme higher secondary school kunhome. wayanad keral india"
+       description: "working on the tree..."
     },
     {
        name: "My Journey",
@@ -133,4 +133,69 @@ export const AboutCardDialogContent = [
        heading: "My Thoughts",
        description: "I am Muhammad Adnan. From India, kerala. After my Plus Two, I initially enrolled in a Polytechnic course in Computer Engineering. However, I realized that a traditional academic path wasn't the right fit for me, so I decided to pursue self-learning in the field of programming and web development. I have since gained experience whith front-end and back-end technologies."
     },
+]
+
+
+export const newProjectAddControlls = [
+  {
+    name: "title",
+    label: "Title",
+    placeholder: "Enter the project name",
+    conpomentType: "input",
+    type: "text",
+  },
+  {
+    name: "technologies",
+    label: "Technologies",
+    placeholder: "Technologies used (e.g. React, Node.js, MongoDB)",
+    conpomentType: "input",
+    type: "text",
+  },
+  {
+    name: "description",
+    label: "Description",
+    placeholder: "Write a short project description",
+    conpomentType: "textarea",
+    type: "text",
+  },
+  {
+    name: "deployUrl",
+    label: "Live URL",
+    placeholder: "https://yourproject.com",
+    conpomentType: "input",
+    type: "url",
+  }
+];
+
+
+
+export const userContactControlls = [ 
+    {
+        name: "name",
+        label: "Name",
+        placeholder: "Enter your name",
+        componentType: "input",
+        type: "text"
+    },
+    {
+        name: "email",
+        label: "Email",
+        placeholder: "Enter your email",
+        componentType: "input",
+        type: "email"
+    },
+    {
+        name: "subject",
+        label: "Subject",
+        placeholder: "Enter the subject",
+        componentType: "input",
+        type: "text"
+    },
+    {
+        name: "message",
+        label: "Message",
+        placeholder: "Write your message here...",
+        componentType: "textarea",
+        type: "text"
+    }
 ]

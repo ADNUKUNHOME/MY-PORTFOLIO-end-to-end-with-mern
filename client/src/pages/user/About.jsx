@@ -1,7 +1,9 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import AboutDetailsDialog from "@/components/userView/AboutDetails";
 import { Activity, Code2, Gamepad2, GraduationCap, Heart, Home, Mail, Rocket, User } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useInView } from "react-intersection-observer";
+import { inView, motion } from "framer-motion";
 
 const aboutMeCardContent = [
   { name: "Who I Am", icon: <User className="w-12 h-12 text-blue-500" />, description: "Passionate full-stack developer with a focus on building scalable and performant web applications." },
@@ -15,10 +17,22 @@ const aboutMeCardContent = [
   { name: "Philosophy", icon: <Heart className="w-12 h-12 text-indigo-500" />, description: "I believe in building with empathy, writing clean code, and designing with the user in mind." },
 ];
 
+
 const About = () => {
 
   const [openDialog, setOpenDialog] = useState(false);
   const [selectedCard, setSelectedCard] = useState(null);
+  const [hasAnimated, setHasAnimated] = useState(false);
+
+  const { ref, inView } = useInView({
+    threshold: 0.1
+  })
+
+  useEffect(() => {
+    if (inView) {
+      setHasAnimated(true);
+    }
+  }, [inView])
 
   function handleAboutCardDialog(selectedItem) {
     setOpenDialog(true);
@@ -31,26 +45,32 @@ const About = () => {
       <h1 className="text-4xl font-bold text-center text-black dark:text-white mb-8">
         WHO I AM?
       </h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-6xl">
-        {aboutMeCardContent.map((cardItem) => (
-          <Card className="p-6 border rounded-xl bg-white dark:bg-gray-900 text-center 
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-6xl" ref={ref}>
+        {aboutMeCardContent.map((cardItem, index) => (
+          <motion.div
+            initial={{ y: 100, opacity: 0 }}
+            animate={hasAnimated ? { y: 0, opacity: 1 } : { y: 100, opacity: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut", delay: index * 0.1 }}
+          >
+            <Card className="p-6 border rounded-xl bg-white dark:bg-gray-900 text-center 
               shadow-lg transition-all duration-300 hover:shadow-2xl 
               hover:border-blue-500 dark:hover:border-red-700"
               onClick={() => handleAboutCardDialog(cardItem.name)}>
-            <CardHeader className="flex flex-col items-center gap-3">
-              <div className="text-4xl">
-                {cardItem.icon}
-              </div>
-              <CardTitle className="text-lg font-semibold hover:text-blue-600 dark:hover:text-red-700">
-                {cardItem.name}
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="text-gray-700 dark:text-gray-300 text-sm hover:text-gray-900 dark:hover:text-gray-100">
-              {cardItem.description}
-            </CardContent>
-          </Card>
+              <CardHeader className="flex flex-col items-center gap-3">
+                <div className="text-4xl">
+                  {cardItem.icon}
+                </div>
+                <CardTitle className="text-lg font-semibold hover:text-blue-600 dark:hover:text-red-700">
+                  {cardItem.name}
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="text-gray-700 dark:text-gray-300 text-sm hover:text-gray-900 dark:hover:text-gray-100">
+                {cardItem.description}
+              </CardContent>
+            </Card>
+          </motion.div>
         ))}
-          <AboutDetailsDialog open={openDialog} setOpen={setOpenDialog} selectedCard={selectedCard} setSelectedCard={setSelectedCard} />
+        <AboutDetailsDialog open={openDialog} setOpen={setOpenDialog} selectedCard={selectedCard} setSelectedCard={setSelectedCard} />
       </div>
 
     </div>

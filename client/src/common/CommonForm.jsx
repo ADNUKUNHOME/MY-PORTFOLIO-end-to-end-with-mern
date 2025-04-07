@@ -24,7 +24,7 @@ const CommonForm = ({ formControls, formData, setFormData, onSubmit, buttonText 
                             ...formData,
                             [getformControls.name]: event.target.value
                         })}
-                        className='w-full placeholder-black dark:text-black px-3 py-2 bg-white border border-gray-300 rounded-md shadow-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary autocomplete'
+                        className='w-full placeholder-black dark:text-black px-3 py-2 bg-white border border-gray-300 rounded-md shadow-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary autocomplete'
                     />
                 )
                 break;
@@ -67,7 +67,7 @@ const CommonForm = ({ formControls, formData, setFormData, onSubmit, buttonText 
                             ...formData,
                             [getformControls.name]: event.target.value
                         })}
-                        className="w-full placeholder-black px-3 py-2 bg-white dark:text-black border border-gray-300 rounded-md shadow-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+                        className="w-full placeholder-black px-3 py-2 bg-white dark:text-black border border-gray-300 rounded-md shadow-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
                         rows={4}
                     />
                 )
@@ -97,7 +97,7 @@ const CommonForm = ({ formControls, formData, setFormData, onSubmit, buttonText 
 
     return (
         <form onSubmit={onSubmit}>
-            <div className="flex flex-col gap-3">
+            <div className="flex flex-col gap-3 ">
                 {
                     formControls.map((controlItem) =>
                         <div className="grid gap-1.5 w-full" key={controlItem.name}>
@@ -109,7 +109,7 @@ const CommonForm = ({ formControls, formData, setFormData, onSubmit, buttonText 
             </div>
             {
                 buttonText ?
-                    <Button className='px-4 py-2 bg-black text-white hover:bg-white hover:text-black dark:bg-purple-600 dark:text-white dark:hover:bg-white dark:hover:text-black'>{buttonText}</Button>
+                    <Button className='px-4 py-2 my-5 w-full hover:shadow-xl bg-black text-white hover:bg-white hover:text-black dark:bg-purple-600 dark:text-white dark:hover:bg-white dark:hover:text-black'>{buttonText}</Button>
                     : null
 
             }

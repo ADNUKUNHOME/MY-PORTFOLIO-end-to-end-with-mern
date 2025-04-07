@@ -3,13 +3,46 @@ import { Link, useNavigate } from "react-router-dom";
 import blackAvatar from "../../assets/blackAvatar.png";
 import bigAvatar from "../../assets/bigAvatar.png";
 import { motion, AnimatePresence } from "framer-motion";
-import { BadgeCheck, Gamepad2 } from "lucide-react";
-import { useState } from "react";
-import About from "./About";
+import { Activity, BadgeCheck, Code2, Gamepad2, GraduationCap, Heart, HomeIcon, Mail, Rocket, User } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
+import AboutDetailsDialog from "@/components/userView/AboutDetails";
+import { useInView } from 'react-intersection-observer';
 
 const Home = () => {
   const [changeImage, setChangeImage] = useState(true);
   const navigate = useNavigate();
+  const [openDialog, setOpenDialog] = useState(false);
+  const [selectedCard, setSelectedCard] = useState(null);
+  const { ref, inView } = useInView({
+    threshold: 0.2,
+    triggerOnce: false,
+  });
+
+  const [hasAnimated, setHasAnimated] = useState(false);
+
+  useEffect(() => {
+      setHasAnimated(inView);
+  }, [inView]);
+
+  function handleAboutCardDialog(selectedItem) {
+    setOpenDialog(true);
+    setSelectedCard(selectedItem);
+  }
+
+  const aboutMeCardContent = [
+    { name: "Who I Am", icon: <User className="w-12 h-12 text-blue-500" />, description: "Passionate full-stack developer." },
+    { name: "Tech Stack", icon: <Code2 className="w-12 h-12 text-green-500" />, description: "Skilled in MongoDB, Express, React, and Node.js." },
+    { name: "My Journey", icon: <HomeIcon className="w-12 h-12 text-orange-500" />, description: "Self-taught developer with a love for learning." },
+    { name: "Education", icon: <GraduationCap className="w-12 h-12 text-purple-500" />, description: "Learning never stops." },
+    { name: "Hobbies", icon: <Gamepad2 className="w-12 h-12 text-red-500" />, description: "Gaming and coding enthusiast." },
+    { name: "Current Focus", icon: <Rocket className="w-12 h-12 text-yellow-500" />, description: "Exploring AI-integrated web development." },
+    { name: "Let's Connect", icon: <Mail className="w-12 h-12 text-teal-500" />, description: "Open to collaboration, job opportunities, and networking." },
+    { name: "Journey", icon: <Activity className="w-12 h-12 text-pink-500" />, description: "From curious beginner to confident developer." },
+    { name: "Philosophy", icon: <Heart className="w-12 h-12 text-indigo-500" />, description: "I believe in building with passion and purpose." },
+  ];
 
   return (
     <div className="flex flex-col min-h-screen bg-white dark:bg-slate-950">
@@ -35,7 +68,7 @@ const Home = () => {
               </span>
             </p>
             <p className="text-3xl md:text-4xl lg:text-5xl font-extrabold mt-4 dark:text-white">
-              FULLSTACK{" "} <span>DEVELOPER</span>
+              FULL STACK{" "} <span>DEVELOPER</span>
             </p>
             <p className="text-sm font-semibold md:font-semibold mt-4 text-gray-400 line-clamp-3">
               Specializing in building dynamic web applications with the{" "}
@@ -93,10 +126,51 @@ const Home = () => {
       </div>
 
       {/* {About Session} */}
-      <section className="flex flex-col bg-sky-500 dark:bg-red-700 min-h-[300px]">
-        <About/>
+      <section className="flex flex-col bg-sky-500 dark:bg-red-700 min-h-[300px] px-28 ">
+
+        <div className="flex flex-col w-full items-center justify-center py-8 text-white dark:text-white">
+          <h1>About Me</h1>
+          <Separator className='my-5' />
+        </div>
+
+        <Carousel opts={{
+          align: "start",
+        }} >
+          <CarouselContent className='mb-8' ref={ref} >
+            {aboutMeCardContent.map((cardItem, index) => (
+              <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
+                <motion.div
+                  initial={{ x: -100, opacity: 0 }}
+                  animate={hasAnimated ? { x: 0, opacity: 1 } : { opacity: 0 }}
+                  transition={{ duration: 0.8, ease: "easeOut", delay: index * 0.1 }}
+                >
+                  <Card className="p-6 border rounded-xl h-[250px] bg-white dark:bg-gray-900 text-center 
+                            shadow-lg transition-all duration-300 hover:shadow-2xl 
+                            dark:hover:border-blue-500 hover:border-red-700"
+                    onClick={() => handleAboutCardDialog(cardItem.name)}>
+                    <CardHeader className="flex flex-col items-center gap-3">
+                      <div className="text-4xl">
+                        {cardItem.icon}
+                      </div>
+                      <CardTitle className="text-lg font-semibold hover:text-blue-600 dark:hover:text-red-700">
+                        {cardItem.name}
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="text-gray-700 dark:text-gray-300 text-sm hover:text-gray-900 dark:hover:text-gray-100">
+                      {cardItem.description}
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          <CarouselPrevious />
+          <CarouselNext />
+        </Carousel>
+        <AboutDetailsDialog open={openDialog} setOpen={setOpenDialog} selectedCard={selectedCard} setSelectedCard={setSelectedCard} />
+        <div onClick={() => navigate('/user/about')} className="flex py-2 px-4 bg-white dark:white rounded-full text-sky-500 dark:text-red-700 hover:bg-sky-500 hover:text-white dark:hover:bg-red-800 dark:hover:text-white hover:shadow-xl mb-8 items-center justify-center font-bold text-base md:text-xl">See More</div>
       </section>
-    </div>
+    </div >
   );
 };
 

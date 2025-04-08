@@ -7,8 +7,8 @@ const ProjectSchema = new mongoose.Schema({
     deployUrl: { type: String, required: true },
     image1: { type: String, required: true },
     image2: { type: String, required: true },
-    image3: { type: String, default: null },
-    image4: { type: String, default: null },
+    image3: { type: String, default: '' },
+    image4: { type: String, default: '' },
 })
 
 const Project = mongoose.model('Project', ProjectSchema);

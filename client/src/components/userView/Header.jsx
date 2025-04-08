@@ -1,4 +1,4 @@
-import { LogOut, Menu } from "lucide-react"
+import { Glasses, LogOut, Menu } from "lucide-react"
 import { Link, useNavigate } from "react-router-dom"
 import { Button } from "../ui/button"
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "../ui/sheet"
@@ -105,14 +105,14 @@ const UserHeader = () => {
         return <nav className="flex flex-col mb-3 lg:mb-0 lg:items-center gap-6 lg:flex-row">
             {
                 userViewHeaderMenuItems
-                    .map(menuItem =>
+                    .map((menuItem, i) =>
                         <TooltipProvider>
                             <Tooltip>
                                 <TooltipTrigger asChild>
                                     <Label
                                         onClick={() => handleNavigate(menuItem)}
                                         className='text-sm font-medium cursor-pointer text-black dark:text-white hover:border-b-2 hover:border-sky-500 pb-1 dark:hover:border-red-700'
-                                        key={menuItem.id} >
+                                        key={i} >
                                         {menuItem.label}
                                     </Label>
                                 </TooltipTrigger>
@@ -133,8 +133,9 @@ const UserHeader = () => {
     return (
         <header className="sticky top-0 h-16 z-40 w-full border-b bg-background ">
             <div className="flex h-full items-center justify-between px-4 md:px-6">
-                <Link to="/user/home" className="flex items-center gap-2 text-black dark:text-white" >
-                    <span className="font-bold">KNOWME</span>
+                <Link to="/user/home" className="flex items-center gap-2 text-black hover:text-black dark:text-white" >
+                    <Glasses className="text-sky-500 fill-sky-500 w-8 h-7" />
+                    <span className="font-extrabold text-2xl">KNOWME</span>
                 </Link>
                 <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
                     <SheetTrigger asChild >

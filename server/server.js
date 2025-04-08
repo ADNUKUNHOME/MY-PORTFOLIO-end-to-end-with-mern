@@ -37,7 +37,7 @@ App.use(
 
 App.use('/api/auth', authRouter);
 
-App.use('/api/user/projects', projectRouter);
+App.use('/api/admin/projects', projectRouter);
 
 App.listen(PORT, () => console.log(
     `Server is running on Port ${PORT}`

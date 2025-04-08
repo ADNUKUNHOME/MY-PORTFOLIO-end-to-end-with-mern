@@ -140,3 +140,20 @@ button:focus-visible {
     @apply bg-background text-foreground;
   }
 }
+
+
+.bg-dashed-line {
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent,
+    transparent 8px,
+    #64748b 8px,
+    #64748b 12px
+  );
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 100%;
+  z-index: 0;
+}

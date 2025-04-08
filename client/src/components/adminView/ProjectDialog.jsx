@@ -3,17 +3,71 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog"
 import CommonForm from "@/common/CommonForm"
 import { useRef, useState } from "react"
 import { CloudUpload, Trash2 } from "lucide-react"
+import { useToast } from "@/hooks/use-toast"
+import { useDispatch } from "react-redux"
+import { addNewProject, fetchAllProjects } from "@/store/admin-slice/projectSlice"
 
 const AddProjectDialog = ({ open, setOpen }) => {
 
     const [formData, setFormData] = useState({});
-
-    const onSubmit = () => {
-
-    }
-
     const fileInputs = useRef([]);
     const [images, setImages] = useState([null, null, null, null]);
+    const { toast } = useToast();
+    const dispatch = useDispatch();
+
+    const onSubmit = (e) => {
+        e.preventDefault();
+        if (images.some(img => !img)) {
+            toast({
+                title: 'Oops!',
+                description: 'Please upload 4 images',
+                variant: 'destructive'
+            })
+            return;
+        }
+
+        const { title, description, deployUrl, technologies } = formData;
+        if (!title || !description || !deployUrl || !technologies) {
+            toast({
+                title: 'Missing fields',
+                description: 'Please fill in all required form fields.',
+                variant: 'destructive'
+            });
+            return;
+        }
+
+        const data = new FormData();
+        data.append("title", formData.title);
+        data.append("description", formData.description);
+        data.append("deployUrl", formData.deployUrl);
+        data.append("technologies", formData.technologies);
+
+        images.forEach((img, index) => {
+            data.append("images", img);
+        });
+
+        dispatch(addNewProject(data))
+            .unwrap()
+            .then(() => {
+                toast({
+                    title: 'Success',
+                    description: 'Project is added Successfully'
+                })
+                setOpen(false);
+                setFormData({});
+                setImages([null, null, null, null]);
+            })
+            .catch((err) => {
+                console.error("Project submission failed:", err);
+                toast({
+                    title: 'Oops!',
+                    description: 'Project submission failed',
+                    variant: 'destructive'
+                })
+            });
+    }
+
+
 
     const handleFileChange = (index, event) => {
         const file = event.target.files[0];
@@ -35,9 +89,6 @@ const AddProjectDialog = ({ open, setOpen }) => {
         updatedImages[index] = null;
         setImages(updatedImages);
     };
-
-    console.log('formData : ', formData, 'images : ', images);
-    
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>

@@ -1,16 +1,57 @@
+const { ImageUploadUtils } = require("../../config/cloudinary");
 const Project = require("../../model/projectModel");
 
+
+// const handleImageUpload = (req, res) => {
+//     try {
+
+//         if (!req.file) {
+//             return res.status(400).json({
+//                 success: false,
+//                 message: 'No file uploaded!'
+//             })
+//         }
+
+//         cloudinary.uploader.upload_stream({ resource_type: 'auto' }, (error, result) => {
+//             if (error) {
+//                 console.log(error)
+//                 return res.status(500).json({
+//                     success: false,
+//                     message: 'Cloudinary Upload error'
+//                 })
+//             } else {
+//                 return res.status(200).json({
+//                     success: true,
+//                     message: 'Cloudinary Uplaod success'
+//                 })
+//             }
+//         })
+
+//     } catch (e) {
+//         console.log(e);
+//         return res.status(500).json({
+//             success: false,
+//             message: 'Some errror occured!'
+//         })
+//     }
+// }
 
 const addProject = async (req, res) => {
 
     try {
-        const { title, description, deployUrl, technologies, image1, image2, image3, image4 } = req.body;
-        if (!title || !description || !deployUrl || !technologies || !image1 || !image2) {
+        const { title, description, deployUrl, technologies } = req.body;
+        if (!title || !description || !deployUrl || !technologies || !req.files || req.files.length !== 4) {
             return res.status(400).json({
                 success: false,
-                message: 'You Must Fill All Fields!'
+                message: 'You Must Fill All Fields and Extact 4 images!'
             })
         }
+
+        const uploadPromises = req.files.map(file => ImageUploadUtils(file.buffer));
+        const uploadResults = await Promise.all(uploadPromises);
+
+        const [image1, image2, image3, image4] = uploadResults.map(result => result.secure_url);
+
 
         const newProject = new Project({
             title: title,
@@ -49,7 +90,7 @@ const editProject = async (req, res) => {
         const { title, description, deployUrl, technologies, image1, image2, image3, image4 } = req.body;
 
 
-        const updatedProject = await Project.findByIdAndUpdate(id, { $set: { title, description, deployUrl, technologies, image1, image2, image3, image4 } }, {new: true});
+        const updatedProject = await Project.findByIdAndUpdate(id, { $set: { title, description, deployUrl, technologies, image1, image2, image3, image4 } }, { new: true });
         if (!updatedProject) {
             return res.status(404).json({
                 success: false,

@@ -3,7 +3,7 @@ import AboutDetailsDialog from "@/components/userView/AboutDetails";
 import { Activity, Code2, Gamepad2, GraduationCap, Heart, Home, Mail, Rocket, User } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
-import { inView, motion } from "framer-motion";
+import { motion } from "framer-motion";
 
 const aboutMeCardContent = [
   { name: "Who I Am", icon: <User className="w-12 h-12 text-blue-500" />, description: "Passionate full-stack developer with a focus on building scalable and performant web applications." },

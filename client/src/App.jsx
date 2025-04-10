@@ -34,7 +34,10 @@ function App() {
           <Route path='verify-email' element={<EmailVerify />} />
         </Route>
         <Route path='/user' element={
-          <UserLayout />
+          <CheckAuth>
+            <UserLayout />
+          </CheckAuth>
+
         }>
           <Route path='home' element={<Home />} />
           <Route path='about' element={<About />} />
@@ -43,7 +46,11 @@ function App() {
           <Route path='blogs' element={<BlogUser />} />
           <Route path='contact' element={<Contact />} />
         </Route>
-        <Route path='/admin' element={<AdminLayout />}>
+        <Route path='/admin' element={
+          <CheckAuth>
+            <AdminLayout />
+          </CheckAuth>
+        }>
           <Route path='dashboard' element={<AdminDashboard />} />
           <Route path='projects' element={<AdminProjects />} />
           <Route path='Skills' element={<AdminSkills />} />

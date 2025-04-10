@@ -1,8 +1,9 @@
+import WrongPage from "./WrongPage"
 
 const BlogUser = () => {
   return (
     <div>
-      blog
+      <WrongPage wrong={'We Are Working On It In This Modern Page...!'}/>
     </div>
   )
 }

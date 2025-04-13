@@ -10,6 +10,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import AboutDetailsDialog from "@/components/userView/AboutDetails";
 import { useInView } from 'react-intersection-observer';
+import HomeProjects from "@/components/userView/HomeProjects";
+import HomeSkills from "@/components/userView/HomeSkills";
+import Footer from "@/components/userView/Footer";
 
 const Home = () => {
   const [changeImage, setChangeImage] = useState(true);
@@ -24,7 +27,7 @@ const Home = () => {
   const [hasAnimated, setHasAnimated] = useState(false);
 
   useEffect(() => {
-      setHasAnimated(inView);
+    setHasAnimated(inView);
   }, [inView]);
 
   function handleAboutCardDialog(selectedItem) {
@@ -84,8 +87,23 @@ const Home = () => {
               >
                 Hire Me
               </Button>
-              <Link className="text-sm lg:text-lg font-bold text-sky-500 dark:text-red-700 shadow-xl rounded-xl">LinkedIn</Link>
-              <Link className="text-sm lg:text-lg font-bold text-sky-500 dark:text-red-700 inline-block shadow-xl rounded-xl">GitHub</Link>
+              <a
+                className="text-sm lg:text-lg font-bold text-sky-500 dark:text-red-700 shadow-xl rounded-xl"
+                href="https://www.linkedin.com/in/muhammad-adnan-a479052a1"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                LinkedIn
+              </a>
+
+              <a
+                className="text-sm lg:text-lg font-bold text-sky-500 dark:text-red-700 shadow-xl rounded-xl"
+                href="https://github.com/ADNUKUNHOME"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                GitHub
+              </a>
             </div>
           </div>
         </div>
@@ -126,10 +144,10 @@ const Home = () => {
       </div>
 
       {/* {About Session} */}
-      <section className="flex flex-col bg-sky-500 dark:bg-red-700 min-h-[300px] px-28 ">
+      <section className="flex flex-col bg-sky-500 dark:bg-red-700 min-h-[300px] px-14 md:px-28 ">
 
         <div className="flex flex-col w-full items-center justify-center py-8 text-white dark:text-white">
-          <h1>About Me</h1>
+          <h1 className='font-extrabold text-3xl md:text-5xl'>About Me</h1>
           <Separator className='my-5' />
         </div>
 
@@ -168,7 +186,22 @@ const Home = () => {
           <CarouselNext />
         </Carousel>
         <AboutDetailsDialog open={openDialog} setOpen={setOpenDialog} selectedCard={selectedCard} setSelectedCard={setSelectedCard} />
-        <div onClick={() => navigate('/user/about')} className="flex py-2 px-4 bg-white dark:white rounded-full text-sky-500 dark:text-red-700 hover:bg-sky-500 hover:text-white dark:hover:bg-red-800 dark:hover:text-white hover:shadow-xl mb-8 items-center justify-center font-bold text-base md:text-xl">See More</div>
+        <div onClick={() => navigate('/user/about')} className="flex py-2 px-4 bg-white dark:white rounded-full text-sky-500 dark:text-red-700 hover:bg-sky-500 hover:text-white dark:hover:bg-red-800 dark:hover:text-white hover:shadow-xl border hover:border-white mb-8 items-center justify-center font-bold text-base md:text-xl">See More</div>
+      </section>
+
+      {/* projects session */}
+      <section className="flex flex-col min-h-[300px] bg-white dark:bg-slate-950 py-10">
+        <HomeProjects />
+      </section>
+
+      {/* Skills session */}
+      <section className="flex flex-col min-h-[300px] bg-sky-500 dark:bg-red-700 py-10">
+        <HomeSkills />
+      </section>
+
+      {/* Footer session */}
+      <section className="flex flex-col  bg-sky-500 dark:bg-red-700">
+        <Footer />
       </section>
     </div >
   );

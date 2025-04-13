@@ -49,7 +49,7 @@ const ResetPassword = () => {
     function handleResetPassword() {
         dispatch(resetPassword({ email, otp, newPassword: newPass })).then((data) => {
             console.log(data);
-            if(data?.payload?.success) {
+            if (data?.payload?.success) {
                 toast({
                     title: 'Success',
                     description: data?.payload?.message
@@ -65,7 +65,7 @@ const ResetPassword = () => {
             }
         });
     }
-    
+
 
 
 
@@ -84,17 +84,17 @@ const ResetPassword = () => {
     const handlePaste = (e) => {
         const paste = e.clipboardData.getData('text').slice(0, 6).split('');
         const newOtp = [...otp];
-    
+
         paste.forEach((char, index) => {
             if (inputRefs.current[index]) {
                 inputRefs.current[index].value = char;
                 newOtp[index] = char;
             }
         });
-    
+
         setOtp(newOtp);
     };
-    
+
 
     useEffect(() => {
         if (resetOtpSent) {
@@ -108,14 +108,14 @@ const ResetPassword = () => {
             {
                 sendOtp ?
                     <Button onClick={() => setSentOtp(false)} className='self-start font-bold shadow-lg p-0 rounded-3xl bg-transparent'><ArrowLeft /></Button>
-                    : null
+                    : <Button onClick={() => navigate('/auth/login')} className='self-start font-bold shadow-lg p-0 rounded-3xl bg-transparent'><ArrowLeft /></Button>
             }
             <CardHeader>
-                <CardTitle className='text-white dark:text-white font-extrabold text-2xl'>{sendOtp ? 'Reset Password OTP' : 'Enter Your Registered Email ID' }</CardTitle>
+                <CardTitle className='text-white dark:text-white font-extrabold text-2xl'>{sendOtp ? 'Reset Password OTP' : 'Enter Your Registered Email ID'}</CardTitle>
             </CardHeader>
             <CardContent className='items-center justify-center'>
                 {
-                    sendOtp &&  !otpSubmitted ? (
+                    sendOtp && !otpSubmitted ? (
                         <div className="flex flex-col">
                             <p className="font-semibold text-slate-800 dark:text-muted-foreground">Enter the 6 digit code sent to your email id</p>
                             <div className="flex justify-between mt-5" onPaste={handlePaste}>
@@ -137,7 +137,7 @@ const ResetPassword = () => {
                             <Button onClick={() => setOtpSubmitted(true)} className='py-3 px-4 mt-7 w-full rounded-3xl text-white bg-gradient-to-r from-indigo-600 to-indigo-950 dark:text-white dark:bg-gradient-to-r dark:from-black dark:to-indigo-950'>Verify OTP</Button>
                         </div>
                     ) : (
-                        <div className={`${otpSubmitted ? 'hidden' : 'flex flex-col items-center' }`}>
+                        <div className={`${otpSubmitted ? 'hidden' : 'flex flex-col items-center'}`}>
                             <p className="font-semibold text-slate-800 mb-5 dark:text-muted-foreground">Reset Password Authentication</p>
                             <div className="flex rounded-full bg-white w-full max-w-xs items-center">
                                 <Input onChange={(e) => setEmail(e.target.value)} value={email} type='email' placeholder='example@gmail.com' className='border-none font-semibold text-black dark:text-black outline-none bg-transparent px-4 py-2 flex-1 focus:ring-0 focus:border-transparent focus-visible:ring-0 focus:outline-none  focus-visible:border-transparent shadow-none' />
@@ -147,15 +147,15 @@ const ResetPassword = () => {
                 }
                 {
                     otpSubmitted ?
-                        
-                            <div className='flex flex-col items-center'>
-                                <p className="font-semibold text-slate-800 mb-5 dark:text-muted-foreground">Enter New Password</p>
-                                <div className="flex rounded-full bg-white w-full max-w-xs items-center">
-                                    <Input onChange={(e) => setNewPass(e.target.value)} value={newPass} type='password' placeholder='enter new password' className='border-none font-semibold text-black dark:text-black outline-none bg-transparent px-4 py-2 flex-1 focus:ring-0 focus:border-transparent focus-visible:ring-0 focus:outline-none  focus-visible:border-transparent shadow-none' />
-                                    <div onClick={(e) => handleResetPassword(e)} className='bg-black rounded-full py-3 px-6 text-white text-lg cursor-pointer'><ArrowRight /></div>
-                                </div>
-                            </div>  : null
-                    }
+
+                        <div className='flex flex-col items-center'>
+                            <p className="font-semibold text-slate-800 mb-5 dark:text-muted-foreground">Enter New Password</p>
+                            <div className="flex rounded-full bg-white w-full max-w-xs items-center">
+                                <Input onChange={(e) => setNewPass(e.target.value)} value={newPass} type='password' placeholder='enter new password' className='border-none font-semibold text-black dark:text-black outline-none bg-transparent px-4 py-2 flex-1 focus:ring-0 focus:border-transparent focus-visible:ring-0 focus:outline-none  focus-visible:border-transparent shadow-none' />
+                                <div onClick={(e) => handleResetPassword(e)} className='bg-black rounded-full py-3 px-6 text-white text-lg cursor-pointer'><ArrowRight /></div>
+                            </div>
+                        </div> : null
+                }
             </CardContent>
         </Card>
     )

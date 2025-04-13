@@ -15,16 +15,29 @@ import EmailVerify from './pages/auth/emailVerify'
 import AdminDashboard from './pages/admin/dashboard'
 import AdminLayout from './components/adminView/Layout'
 import AdminProjects from './pages/admin/Projects'
-import AdminSkills from './pages/admin/Skills'
 import WrongPage from './pages/user/wrongPage'
+import { useDispatch, useSelector } from 'react-redux'
+import AdminContacts from './pages/admin/Contacts'
+import { useEffect } from 'react'
+import { isAuthenticatedUser } from './store/auth-slice'
 
 function App() {
+  
+  const {user, isAuthenticated} = useSelector(state => state.auth);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const token = JSON.parse(
+      sessionStorage.getItem('token')
+    );
+    dispatch(isAuthenticatedUser(token));
+  }, [dispatch])  
 
   return (
     <div className='flex flex-col overflow-hidden'>
       <Routes>
         <Route path='/auth' element={
-          <CheckAuth>
+          <CheckAuth user={user} isAuthenticated={isAuthenticated}>
             <Layout />
           </CheckAuth>
         }>
@@ -34,7 +47,7 @@ function App() {
           <Route path='verify-email' element={<EmailVerify />} />
         </Route>
         <Route path='/user' element={
-          <CheckAuth>
+          <CheckAuth user={user} isAuthenticated={isAuthenticated}>
             <UserLayout />
           </CheckAuth>
 
@@ -47,15 +60,19 @@ function App() {
           <Route path='contact' element={<Contact />} />
         </Route>
         <Route path='/admin' element={
-          <CheckAuth>
+          <CheckAuth user={user} isAuthenticated={isAuthenticated}>
             <AdminLayout />
           </CheckAuth>
         }>
           <Route path='dashboard' element={<AdminDashboard />} />
           <Route path='projects' element={<AdminProjects />} />
-          <Route path='Skills' element={<AdminSkills />} />
+          <Route path='contacts' element={<AdminContacts />} />
         </Route>
-        <Route path='*' element={<WrongPage wrong={"You'r In Wrong Way!"} />} />
+        <Route path='*' element={
+          <CheckAuth user={user} isAuthenticated={isAuthenticated}>
+            <WrongPage wrong={"You'r In Wrong Way!"} />
+          </CheckAuth>
+          } />
       </Routes>
     </div>
   )

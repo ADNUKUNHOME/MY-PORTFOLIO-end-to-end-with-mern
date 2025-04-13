@@ -11,6 +11,7 @@ const initialState = {
     emailVerified: false,
     resetOtpSent: false,
     passwordReset: false,
+    token: null
 }
 
 
@@ -29,6 +30,22 @@ export const registerUser = createAsyncThunk('/auth/register', async (formData, 
 export const loginUser = createAsyncThunk('/auth/loginUser', async (formData, { rejectWithValue }) => {
     try {
         const response = await axios.post('http://localhost:5000/api/auth/login', formData, { withCredentials: true });
+        return response.data;
+    } catch (error) {
+        console.error("Login Error:", error.response?.data);
+
+        return rejectWithValue(error.response?.data || { message: "Something went wrong!" });
+    }
+});
+
+export const isAuthenticatedUser = createAsyncThunk('/auth/isAuthenticatedUser', async (token, { rejectWithValue }) => {
+    try {
+        const response = await axios.get('http://localhost:5000/api/auth/is-auth', {
+            headers: {
+                Authorization: `Bearer ${token}`,
+                "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate"
+            }
+        });
         return response.data;
     } catch (error) {
         console.error("Login Error:", error.response?.data);
@@ -60,8 +77,8 @@ export const sendVerifyOtp = createAsyncThunk('/auth/sendVerifyOtp', async (emai
     }
 });
 
-export const emailVerify = createAsyncThunk('/auth/emailVerify', async ( {email, otp} , { rejectWithValue }) => {
-    console.log('email : ', email, 'otp : ', otp );
+export const emailVerify = createAsyncThunk('/auth/emailVerify', async ({ email, otp }, { rejectWithValue }) => {
+    console.log('email : ', email, 'otp : ', otp);
     try {
         const response = await axios.post('http://localhost:5000/api/auth/verify-account', { email, otp });
         return response.data;
@@ -99,7 +116,17 @@ export const resetPassword = createAsyncThunk('/auth/resetPassword', async ({ em
 const authSlice = createSlice({
     name: 'authSlice',
     initialState,
-    reducers: {},
+    reducers: {
+        setUser: (state, action) => {
+            state.user = action.payload;
+            state.isAuthenticated = true;
+        },
+        resetTokenAndCredentials: (state) => {
+            state.isAuthenticated = false;
+            state.user = null;
+            state.token = null;
+        }
+    },
     extraReducers: (builder) => {
         builder
             //Register User
@@ -130,7 +157,32 @@ const authSlice = createSlice({
                 state.isLoading = false
                 state.error = action.payload?.message
                 state.isAuthenticated = false
+                state.token = null
             })
+
+            //isAuthenticated User 
+            .addCase(isAuthenticatedUser.pending, (state) => {
+                state.isLoading = true
+            })
+            .addCase(isAuthenticatedUser.fulfilled, (state, action) => {
+                state.isLoading = false;
+
+                if (action.payload?.success) {
+                    state.user = action.payload?.user;
+                    state.isAuthenticated = true;
+                    localStorage.setItem("user", JSON.stringify(action.payload.user));
+                } else {
+                    state.user = null;
+                    state.isAuthenticated = false;
+                }
+            })
+            .addCase(isAuthenticatedUser.rejected, (state, action) => {
+                state.isLoading = false
+                state.error = action.payload?.message
+                state.isAuthenticated = false
+                state.token = null
+            })
+
             // Logout User
             .addCase(logoutUser.pending, (state) => {
                 state.isLoading = true;
@@ -139,6 +191,8 @@ const authSlice = createSlice({
                 state.isLoading = false;
                 state.isAuthenticated = false;
                 state.user = null;
+                sessionStorage.removeItem('token');
+                localStorage.removeItem('user');
             })
             .addCase(logoutUser.rejected, (state, action) => {
                 state.isLoading = false;
@@ -199,5 +253,5 @@ const authSlice = createSlice({
     }
 })
 
-
+export const {setUser, resetTokenAndCredentials} = authSlice.actions;
 export default authSlice.reducer;

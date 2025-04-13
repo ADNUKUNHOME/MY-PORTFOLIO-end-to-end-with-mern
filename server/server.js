@@ -5,6 +5,7 @@ const { default: mongoose } = require('mongoose');
 require('dotenv').config();
 const authRouter = require('./routes/auth/authRoutes');
 const projectRouter = require('./routes/adminRoutes/adminRoutes');
+const contactRouter = require('./routes/userRoutes/userRoutes');
 
 
 const App = express();
@@ -38,6 +39,8 @@ App.use(
 App.use('/api/auth', authRouter);
 
 App.use('/api/admin/projects', projectRouter);
+
+App.use('/api/user/contact', contactRouter);
 
 App.listen(PORT, () => console.log(
     `Server is running on Port ${PORT}`

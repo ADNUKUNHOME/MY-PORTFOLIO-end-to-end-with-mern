@@ -4,6 +4,7 @@ import { Activity, Code2, Gamepad2, GraduationCap, Heart, Home, Mail, Rocket, Us
 import { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import { motion } from "framer-motion";
+import Footer from "@/components/userView/Footer";
 
 const aboutMeCardContent = [
   { name: "Who I Am", icon: <User className="w-12 h-12 text-blue-500" />, description: "Passionate full-stack developer with a focus on building scalable and performant web applications." },
@@ -55,7 +56,7 @@ const About = () => {
             <Card className="p-6 border rounded-xl bg-white dark:bg-gray-900 text-center 
               shadow-lg transition-all duration-300 hover:shadow-2xl 
               hover:border-blue-500 dark:hover:border-red-700"
-              onClick={() => handleAboutCardDialog(cardItem.name)}>
+              onClick={() => handleAboutCardDialog(cardItem.name)} key={index}>
               <CardHeader className="flex flex-col items-center gap-3">
                 <div className="text-4xl">
                   {cardItem.icon}
@@ -71,6 +72,9 @@ const About = () => {
           </motion.div>
         ))}
         <AboutDetailsDialog open={openDialog} setOpen={setOpenDialog} selectedCard={selectedCard} setSelectedCard={setSelectedCard} />
+      </div>
+      <div className="w-full  rounded-2xl">
+        <Footer />
       </div>
 
     </div>

@@ -6,7 +6,7 @@ import CommonForm from "@/common/CommonForm"
 import { loginFormControls } from "@/config"
 import { useState } from "react"
 import { useToast } from "@/hooks/use-toast"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { loginUser } from "@/store/auth-slice"
 
 
@@ -18,6 +18,7 @@ const initialState = {
 const Login = () => {
 
     const [formData, setFormData] = useState(initialState);
+    const { user } = useSelector(state => state.auth);
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { toast } = useToast();
@@ -31,22 +32,21 @@ const Login = () => {
             })
         } else {
 
-        dispatch(loginUser(formData)).then((data) => {
-            if(data?.payload?.success) {
-                toast({
-                    title: data?.payload?.message
-                })       
-                navigate('/user/home');
-            } else {
-                toast({
-                    title: "Error",
-                    description: data?.payload?.message || "Something went wrong!",
-                    variant: "destructive",
-                })
-            }   
-            
-        })
-    }
+            dispatch(loginUser(formData)).then((data) => {
+                if (data?.payload?.success) {
+                    toast({
+                        title: data?.payload?.message
+                    })
+                } else {
+                    toast({
+                        title: "Error",
+                        description: data?.payload?.message || "Something went wrong!",
+                        variant: "destructive",
+                    })
+                }
+
+            })
+        }
     }
 
 

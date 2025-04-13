@@ -43,9 +43,13 @@ const addProject = async (req, res) => {
         if (!title || !description || !deployUrl || !technologies || !req.files || req.files.length !== 4) {
             return res.status(400).json({
                 success: false,
-                message: 'You Must Fill All Fields and Extact 4 images!'
+                message: 'You Must Fill All Fields and Exact 4 images!'
             })
         }
+
+        const techArray = Array.isArray(technologies)
+            ? technologies
+            : technologies.split(',').map(t => t.trim());
 
         const uploadPromises = req.files.map(file => ImageUploadUtils(file.buffer));
         const uploadResults = await Promise.all(uploadPromises);
@@ -57,7 +61,7 @@ const addProject = async (req, res) => {
             title: title,
             description: description,
             deployUrl: deployUrl,
-            technologies: technologies,
+            technologies: techArray,
             image1: image1,
             image2: image2,
             image3: image3,
@@ -89,8 +93,11 @@ const editProject = async (req, res) => {
         const { id } = req.params;
         const { title, description, deployUrl, technologies, image1, image2, image3, image4 } = req.body;
 
+        const techArray = Array.isArray(technologies)
+            ? technologies
+            : technologies.split(',').map(t => t.trim());
 
-        const updatedProject = await Project.findByIdAndUpdate(id, { $set: { title, description, deployUrl, technologies, image1, image2, image3, image4 } }, { new: true });
+        const updatedProject = await Project.findByIdAndUpdate(id, { $set: { title, description, deployUrl, technologies: techArray, image1, image2, image3, image4 } }, { new: true });
         if (!updatedProject) {
             return res.status(404).json({
                 success: false,

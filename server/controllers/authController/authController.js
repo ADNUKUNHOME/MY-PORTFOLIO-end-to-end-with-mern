@@ -107,7 +107,8 @@ const loginUser = async (req, res) => {
             user: {
                 email: user.email,
                 userName: user.userName,
-                id: user._id
+                id: user._id,
+                role: user.role
             }
         })
 
@@ -146,8 +147,8 @@ const sendVerifyOtp = async (req, res) => {
 
         const { email } = req.body;
 
-        const user = await User.findOne({email});
-        if(!user) {
+        const user = await User.findOne({ email });
+        if (!user) {
             return res.status(500).json({
                 success: false,
                 message: 'User is not Exist! Please try again.'
@@ -203,23 +204,23 @@ const verifyEmail = async (req, res) => {
             })
         }
 
-        const user = await User.findOne({email});
+        const user = await User.findOne({ email });
 
-        if(!user) {
+        if (!user) {
             return res.status(500).json({
                 success: false,
                 message: 'User is not exist!'
             })
         }
 
-        if(user.verifyOtp === '' || user.verifyOtp !== otp) {
+        if (user.verifyOtp === '' || user.verifyOtp !== otp) {
             return res.status(500).json({
                 success: false,
                 message: 'Invalid OTP provided!'
             })
         }
 
-        if(user.verifyOtpExpireAt < Date.now()) {
+        if (user.verifyOtpExpireAt < Date.now()) {
             return res.status(500).json({
                 success: false,
                 message: 'OTP expired!'
@@ -247,17 +248,29 @@ const verifyEmail = async (req, res) => {
 }
 
 
-const isAuthenticated = async (req, res) => {
-    try {
-        return res.status(200).json({
-            success: true,
-            message: 'User is authenticated!'
+const isAuthenticated = async (req, res, next) => {
+
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1];
+
+    if (!token) {
+        return res.status(401).json({
+            success: false,
+            message: 'Unauthorized User!'
         })
+    }
+
+    try {
+
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        req.user = decoded;
+        next();
+
     } catch (e) {
         console.error("Error in loginUser:", e);
         res.status(500).json({
             success: false,
-            message: e.message || 'Internal Server Error'
+            message: 'Invalid token'
         });
     }
 }
@@ -265,10 +278,10 @@ const isAuthenticated = async (req, res) => {
 
 //Endpoind for password reset
 
-const resetPasswordOtp  = async (req, res) => {    
-    const {email} = req.body;
-    if(!email) {
-        return  res.status(400).json({
+const resetPasswordOtp = async (req, res) => {
+    const { email } = req.body;
+    if (!email) {
+        return res.status(400).json({
             success: false,
             message: 'Email id is required'
         })
@@ -276,9 +289,9 @@ const resetPasswordOtp  = async (req, res) => {
 
     try {
 
-        const user = await User.findOne({email});
-        if(!user) {
-            return  res.status(400).json({
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.status(400).json({
                 success: false,
                 message: 'User is not Exist! Please Enter a valid Email Address'
             })
@@ -300,11 +313,11 @@ const resetPasswordOtp  = async (req, res) => {
         }
         await sendEmail(mailOptions);
 
-        return  res.status(200).json({
+        return res.status(200).json({
             success: true,
             message: 'OTP sent to the email id'
-        }) 
-        
+        })
+
     } catch (e) {
         console.error("Error in reset otp:", e);
         res.status(500).json({
@@ -316,8 +329,8 @@ const resetPasswordOtp  = async (req, res) => {
 
 const passwordReset = async (req, res) => {
 
-    const {email, otp, newPassword} = req.body;
-    if(!email || !otp || !newPassword) {
+    const { email, otp, newPassword } = req.body;
+    if (!email || !otp || !newPassword) {
         return res.status(400).json({
             success: false,
             message: 'Invalid data Provided!'
@@ -325,30 +338,30 @@ const passwordReset = async (req, res) => {
     }
 
     try {
-        const user = await User.findOne({email});
-        if(!user) {
-            return  res.status(400).json({
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.status(400).json({
                 success: false,
                 message: 'User is not Exist! Please Enter a valid Email Address'
             })
         }
 
-        if(user.resetOtp === '' || user.resetOtp !== otp) {
-            return  res.status(400).json({
+        if (user.resetOtp === '' || user.resetOtp !== otp) {
+            return res.status(400).json({
                 success: false,
                 message: 'Incorrect  OTP provided'
             })
         }
 
-        
-        if(user.resetOtpExpireAt < Date.now()) {
+
+        if (user.resetOtpExpireAt < Date.now()) {
             return res.status(400).json({
                 success: false,
                 message: 'OTP expired!'
             })
         }
 
-        const hashedPassword = await bcrypt.hash(newPassword,10);
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
 
         user.password = hashedPassword;
         user.resetOtp = '';

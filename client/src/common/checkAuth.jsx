@@ -6,8 +6,12 @@ function CheckAuth({isAuthenticated, user, children}) {
     const location = useLocation();
 
     if(location.pathname === '/') {
-        if (isAuthenticated && user?.role === 'admin') {
-            return <Navigate to='/admin/dashboard' replace />
+        if (isAuthenticated) {
+            if(user.role === 'user') {
+                return <Navigate to='/user/home' replace />
+            } else {
+                return <Navigate to='/admin/dashboard' replace />
+            }
         } else {
             return <Navigate to='/user/home' replace />
         }

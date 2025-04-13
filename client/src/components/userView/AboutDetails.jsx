@@ -16,7 +16,7 @@ const AboutDetailsDialog = ({ open, setOpen, selectedCard, setSelectedCard }) =>
 
     return (
         <Dialog open={open} onOpenChange={handleCloseDialog}>
-            <DialogContent className='w-96 sm:w-1/2 md:w-1/3 lg:w-[600px] rounded-lg p-6 bg-sky-900 dark:bg-red-900'>
+            <DialogContent className='w-96 sm:w-1/2 md:w-1/3 lg:w-[600px] rounded-lg p-6 bg-sky-900 dark:bg-red-900 overflow-auto max-h-[400px]'>
                 {
                     AboutCardDialogContent.map((item) => (
                         item.name === selectedCard ?

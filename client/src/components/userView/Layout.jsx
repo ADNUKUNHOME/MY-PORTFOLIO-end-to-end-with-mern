@@ -13,7 +13,7 @@ const UserLayout = () => {
   }, [location.pathname]);
 
   return (
-    <div className='flex flex-col h-screen w-screen bg-white overflow-hidden'>
+    <div className='flex flex-col h-screen w-screen bg-white overflow-x-hidden'>
       <UserHeader />
       <main
         ref={scrollRef}

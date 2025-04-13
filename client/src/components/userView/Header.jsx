@@ -4,7 +4,7 @@ import { Button } from "../ui/button"
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "../ui/sheet"
 import { Label } from "../ui/label"
 import { userViewHeaderMenuItems } from "@/config"
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import ThemeToggle from "../darkMode/themeToggle"
 import { Avatar, AvatarFallback } from "../ui/avatar"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuShortcut, DropdownMenuTrigger } from "../ui/dropdown-menu"
@@ -12,18 +12,37 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { useState } from "react"
 import { Separator } from "../ui/separator"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/tooltip"
+import { useToast } from "@/hooks/use-toast"
+import { logoutUser } from "@/store/auth-slice"
 
 const UserHeader = () => {
 
     const { user } = useSelector(state => state.auth);
     const navigate = useNavigate();
     const [sheetOpen, setSheetOpen] = useState(false);
-
+    const dispatch = useDispatch();
+    const { toast } = useToast();
 
     const RightHeaderContent = () => {
 
         const [openDialog, setOpenDialog] = useState(false);
         const [confirmEmailChange, setconfirmEmailChange] = useState(false);
+        const [logoutAlert, setLogoutAlert] = useState(false);
+
+
+        function handleLogout() {
+            dispatch(logoutUser()).then((data) => {
+                if (data.payload?.success) {
+                    toast({
+                        title: data.payload?.message
+                    })
+                } else {
+                    toast({
+                        title: data.payload?.message
+                    })
+                }
+            })
+        }
 
 
         return <div className="flex">
@@ -54,7 +73,7 @@ const UserHeader = () => {
                                 Add Account
                                 <DropdownMenuShortcut>Ctrl+A</DropdownMenuShortcut>
                             </DropdownMenuItem>
-                            <DropdownMenuItem className='text-red-500'>
+                            <DropdownMenuItem className='text-red-500' onClick={() => setLogoutAlert(true)}>
                                 <LogOut />
                                 Logout
                             </DropdownMenuItem>
@@ -91,6 +110,21 @@ const UserHeader = () => {
                     </AlertDialogContent>
                 </AlertDialog>
             }
+            {
+                <AlertDialog open={logoutAlert} onOpenChange={setLogoutAlert}>
+                    <AlertDialogContent>
+                        <AlertDialogHeader className='items-center justify-center'>
+                            <AlertDialogTitle className='text-xl font-bold'>Are You Sure?</AlertDialogTitle>
+                            <Separator />
+                            <AlertDialogDescription>Are You Sure want to Logout</AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                            <AlertDialogCancel>No</AlertDialogCancel>
+                            <AlertDialogAction className='bg-red-600 text-white' onClick={() => handleLogout()}>Sure</AlertDialogAction>
+                        </AlertDialogFooter>
+                    </AlertDialogContent>
+                </AlertDialog>
+            }
         </div>
     }
 
@@ -106,13 +140,13 @@ const UserHeader = () => {
             {
                 userViewHeaderMenuItems
                     .map((menuItem, i) =>
-                        <TooltipProvider>
+                        <TooltipProvider key={i}>
                             <Tooltip>
                                 <TooltipTrigger asChild>
                                     <Label
                                         onClick={() => handleNavigate(menuItem)}
                                         className='text-sm font-medium cursor-pointer text-black dark:text-white hover:border-b-2 hover:border-sky-500 pb-1 dark:hover:border-red-700'
-                                        key={i} >
+                                        >
                                         {menuItem.label}
                                     </Label>
                                 </TooltipTrigger>

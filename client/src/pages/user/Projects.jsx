@@ -2,13 +2,14 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card"
 import { fetchAllProjects } from "@/store/admin-slice/projectSlice"
-import { Link2 } from "lucide-react"
+import { Blend, Heading, Link2, ListCollapse } from "lucide-react"
 import { useEffect, useState } from "react"
 import { useInView } from "react-intersection-observer"
 import { useDispatch, useSelector } from "react-redux"
 import { motion } from "framer-motion"
 import WrongPage from "./wrongPage"
 import ProjectImgDialog from "@/components/userView/ProjectImgDialog"
+import Footer from "@/components/userView/Footer"
 
 const Projects = () => {
 
@@ -53,11 +54,11 @@ const Projects = () => {
                           }`}
                       >
                         <img src={img} className="w-full h-full object-cover" />
-                          <Button
-                            className="absolute bottom-2 right-4 px-2 py-5 text-white hover:bg-black/30 bg-black/40 backdrop-blur-sm text-lg rounded-md lg:hidden"
-                          >
-                            {`+${3 -i}`}
-                          </Button>
+                        <Button
+                          className="absolute bottom-2 right-4 px-2 py-5 text-white hover:bg-black/30 bg-black/40 backdrop-blur-sm text-lg rounded-md lg:hidden"
+                        >
+                          {`+${3 - i}`}
+                        </Button>
                       </div>
                     </motion.div>
                   ))}
@@ -73,6 +74,7 @@ const Projects = () => {
                       <Button className='w-full bg-sky-800 dark:bg-red-900 text-white dark:text-white hover:bg-white dark:hover:bg-white hover:text-black dark:hover:text-black hover:shadow-xl text-[12px] md:text-sm'>TITLE HERE</Button>
                     </HoverCardTrigger>
                     <HoverCardContent>
+                      <Heading />
                       <p className='flex items-center justify-center font-bold text-2xl'>
                         {project.title}
                       </p>
@@ -83,6 +85,7 @@ const Projects = () => {
                       <Button className='w-full bg-sky-500 dark:bg-red-700 text-white dark:text-white hover:bg-white dark:hover:bg-white hover:text-black dark:hover:text-black hover:shadow-xl text-[11px] md:text-sm'>Technologies Used</Button>
                     </HoverCardTrigger>
                     <HoverCardContent>
+                      <Blend />
                       <p className='flex font-bold items-center justify-center'>
                         {project.technologies}
                       </p>
@@ -93,6 +96,7 @@ const Projects = () => {
                       <Button className='w-full bg-sky-500 dark:bg-red-700 text-white dark:text-white hover:bg-white dark:hover:bg-white hover:text-black dark:hover:text-black hover:shadow-xl text-[11px] md:text-sm'>Details</Button>
                     </HoverCardTrigger>
                     <HoverCardContent>
+                      <ListCollapse />
                       <p className='flex font-bold text-gray-500 items-center justify-center'>
                         {project.description}
                       </p>
@@ -121,7 +125,9 @@ const Projects = () => {
           ))
           : <WrongPage wrong={"Check Your Connection...!"} />
       }
-
+      <div className="w-full  rounded-2xl">
+        <Footer />
+      </div>
 
     </div>
   )

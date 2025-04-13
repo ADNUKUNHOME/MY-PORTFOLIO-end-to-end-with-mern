@@ -21,6 +21,7 @@ import AdminDashboard from './pages/admin/Dashboard'
 import WrongPage from './pages/user/WrongPage'
 import EmailVerify from './pages/auth/EmailVerify'
 
+
 function App() {
   
   const {user, isAuthenticated} = useSelector(state => state.auth);

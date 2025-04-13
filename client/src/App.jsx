@@ -11,7 +11,6 @@ import Skills from './pages/user/Skills'
 import BlogUser from './pages/user/BlogUser'
 import Contact from './pages/user/Contact'
 import EmailVerify from './pages/auth/emailVerify'
-import AdminDashboard from './pages/admin/dashboard'
 import AdminLayout from './components/adminView/Layout'
 import AdminProjects from './pages/admin/Projects'
 import WrongPage from './pages/user/wrongPage'
@@ -20,6 +19,7 @@ import AdminContacts from './pages/admin/Contacts'
 import { useEffect } from 'react'
 import { isAuthenticatedUser } from './store/auth-slice'
 import ResetPassword from './pages/auth/ResetPassword'
+import AdminDashboard from './pages/admin/Dashboard'
 
 function App() {
   

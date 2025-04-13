@@ -9,7 +9,7 @@ const initialState = {
 export const userContactSubmission = createAsyncThunk('contact/userContactSubmission', async (formData, { rejectWithValue }) => {
     try {
 
-        const response = await axios.post('http://localhost:5000/api/user/contact/add', formData);
+        const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/user/contact/add`, formData);
         return response.data;
 
     } catch (error) {
@@ -21,7 +21,7 @@ export const userContactSubmission = createAsyncThunk('contact/userContactSubmis
 export const getAllContacts = createAsyncThunk('contact/getAllContacts', async (_, { rejectWithValue }) => {
     try {
 
-        const response = await axios.get('http://localhost:5000/api/user/contact/get');
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/user/contact/get`);
         return response.data;
 
     } catch (error) {

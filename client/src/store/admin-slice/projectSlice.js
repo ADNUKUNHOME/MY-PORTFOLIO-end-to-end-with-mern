@@ -9,7 +9,7 @@ const initialState = {
 
 export const addNewProject = createAsyncThunk('admin/addnewproject', async (formData, { rejectWithValue }) => {
     try {
-        const response = await axios.post('http://localhost:5000/api/admin/projects/add', formData, {
+        const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/admin/projects/add`, formData, {
             headers: {
                 "Content-Type": "multipart/form-data"
             }
@@ -24,7 +24,7 @@ export const addNewProject = createAsyncThunk('admin/addnewproject', async (form
 
 export const editProject = createAsyncThunk('admin/editproject', async ({ projectId, formData }, { rejectWithValue }) => {
     try {
-        const response = await axios.put(`http://localhost:5000/api/admin/projects/edit/:${projectId}`, formData);
+        const response = await axios.put(`${import.meta.env.VITE_API_URL}/api/admin/projects/edit/:${projectId}`, formData);
         return response.data;
     } catch (error) {
         console.error('Project Add error:', error.response?.data);
@@ -35,7 +35,7 @@ export const editProject = createAsyncThunk('admin/editproject', async ({ projec
 
 export const deleteProject = createAsyncThunk('admin/deleteproject', async ({ projectId }, { rejectWithValue }) => {
     try {
-        const response = await axios.delete(`http://localhost:5000/api/admin/projects/delete/:${projectId}`)
+        const response = await axios.delete(`${import.meta.env.VITE_API_URL}/api/admin/projects/delete/:${projectId}`)
         return response.data;
     } catch (error) {
         console.error('Project Add error:', error.response?.data);
@@ -46,7 +46,7 @@ export const deleteProject = createAsyncThunk('admin/deleteproject', async ({ pr
 
 export const fetchAllProjects = createAsyncThunk('admin/fetchallprojects', async (_, { rejectWithValue }) => {
     try {
-        const response = await axios.get('http://localhost:5000/api/admin/projects/get');
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/admin/projects/get`);
         return response.data;
     } catch (error) {
         console.error('Project Add error:', error.response?.data);

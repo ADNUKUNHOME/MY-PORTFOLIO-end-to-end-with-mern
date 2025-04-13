@@ -17,7 +17,7 @@ const initialState = {
 
 export const registerUser = createAsyncThunk('/auth/register', async (formData, { rejectWithValue }) => {
     try {
-        const response = await axios.post('http://localhost:5000/api/auth/register', formData);
+        const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/register`, formData);
         return response.data;
     } catch (error) {
         console.error("Login Error:", error.response?.data);
@@ -29,7 +29,7 @@ export const registerUser = createAsyncThunk('/auth/register', async (formData, 
 
 export const loginUser = createAsyncThunk('/auth/loginUser', async (formData, { rejectWithValue }) => {
     try {
-        const response = await axios.post('http://localhost:5000/api/auth/login', formData, { withCredentials: true });
+        const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/login`, formData, { withCredentials: true });
         return response.data;
     } catch (error) {
         console.error("Login Error:", error.response?.data);
@@ -40,7 +40,7 @@ export const loginUser = createAsyncThunk('/auth/loginUser', async (formData, { 
 
 export const isAuthenticatedUser = createAsyncThunk('/auth/isAuthenticatedUser', async (token, { rejectWithValue }) => {
     try {
-        const response = await axios.get('http://localhost:5000/api/auth/is-auth', {
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/auth/is-auth`, {
             headers: {
                 Authorization: `Bearer ${token}`,
                 "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate"
@@ -57,7 +57,7 @@ export const isAuthenticatedUser = createAsyncThunk('/auth/isAuthenticatedUser',
 
 export const logoutUser = createAsyncThunk('/auth/logoutUser', async (_, { rejectWithValue }) => {
     try {
-        const response = await axios.post('http://localhost:5000/api/auth/logout');
+        const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/logout`);
         return response.data;
     } catch (error) {
         console.error("Login Error:", error.response?.data);
@@ -68,7 +68,7 @@ export const logoutUser = createAsyncThunk('/auth/logoutUser', async (_, { rejec
 
 export const sendVerifyOtp = createAsyncThunk('/auth/sendVerifyOtp', async (email, { rejectWithValue }) => {
     try {
-        const response = await axios.post('http://localhost:5000/api/auth/send-verify-otp', email);
+        const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/send-verify-otp`, email);
         return response.data;
     } catch (error) {
         console.error("Login Error:", error.response?.data);
@@ -80,7 +80,7 @@ export const sendVerifyOtp = createAsyncThunk('/auth/sendVerifyOtp', async (emai
 export const emailVerify = createAsyncThunk('/auth/emailVerify', async ({ email, otp }, { rejectWithValue }) => {
     console.log('email : ', email, 'otp : ', otp);
     try {
-        const response = await axios.post('http://localhost:5000/api/auth/verify-account', { email, otp });
+        const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/verify-account`, { email, otp });
         return response.data;
     } catch (error) {
         console.error("Login Error:", error.response?.data);
@@ -92,7 +92,7 @@ export const emailVerify = createAsyncThunk('/auth/emailVerify', async ({ email,
 
 export const passwordResetOtp = createAsyncThunk('/auth/passwordResetOtp', async (email, { rejectWithValue }) => {
     try {
-        const response = await axios.post('http://localhost:5000/api/auth/send-reset-password', { email }, { withCredentials: true });
+        const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/send-reset-password`, { email }, { withCredentials: true });
         return response.data;
     } catch (error) {
         console.error("Login Error:", error.response?.data);
@@ -103,7 +103,7 @@ export const passwordResetOtp = createAsyncThunk('/auth/passwordResetOtp', async
 
 export const resetPassword = createAsyncThunk('/auth/resetPassword', async ({ email, otp, newPassword }, { rejectWithValue }) => {
     try {
-        const response = await axios.post('http://localhost:5000/api/auth/reset-password', { email, otp, newPassword }, { withCredentials: true });
+        const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/reset-password`, { email, otp, newPassword }, { withCredentials: true });
         return response.data;
     } catch (error) {
         console.error("Login Error:", error.response?.data);

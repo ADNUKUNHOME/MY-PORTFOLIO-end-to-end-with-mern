@@ -2,7 +2,6 @@ import { Route, Routes } from 'react-router-dom'
 import Layout from './components/auth/Layout'
 import Login from './pages/auth/Login'
 import Register from './pages/auth/Register'
-import ResetPassword from './pages/auth/resetPassword'
 import CheckAuth from './common/checkAuth'
 import UserLayout from './components/userView/Layout'
 import Home from './pages/user/Home'
@@ -20,6 +19,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import AdminContacts from './pages/admin/Contacts'
 import { useEffect } from 'react'
 import { isAuthenticatedUser } from './store/auth-slice'
+import ResetPassword from './pages/auth/ResetPassword'
 
 function App() {
   

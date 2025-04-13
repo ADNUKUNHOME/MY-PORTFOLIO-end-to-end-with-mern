@@ -13,7 +13,7 @@ import { useState } from "react"
 import { Separator } from "../ui/separator"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/tooltip"
 import { useToast } from "@/hooks/use-toast"
-import { logoutUser } from "@/store/auth-slice"
+import { resetTokenAndCredentials } from "@/store/auth-slice"
 
 const UserHeader = () => {
 
@@ -31,11 +31,12 @@ const UserHeader = () => {
 
 
         function handleLogout() {
-            dispatch(logoutUser()).then((data) => {
+            dispatch(resetTokenAndCredentials()).then((data) => {
                 if (data.payload?.success) {
                     toast({
                         title: data.payload?.message
                     })
+                    sessionStorage.clear();
                 } else {
                     toast({
                         title: data.payload?.message

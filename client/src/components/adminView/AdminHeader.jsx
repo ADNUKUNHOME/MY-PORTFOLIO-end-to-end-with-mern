@@ -3,7 +3,7 @@ import { Link } from "react-router-dom"
 import { Button } from "../ui/button"
 import ThemeToggle from "../darkMode/themeToggle"
 import { useDispatch } from "react-redux"
-import { logoutUser } from "@/store/auth-slice"
+import { resetTokenAndCredentials } from "@/store/auth-slice"
 import { useToast } from "@/hooks/use-toast"
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "../ui/alert-dialog"
 import { Separator } from "../ui/separator"
@@ -17,11 +17,12 @@ const AdminHeader = () => {
 
 
     function handleLogout() {
-        dispatch(logoutUser()).then((data) => {
+        dispatch(resetTokenAndCredentials()).then((data) => {
             if (data.payload?.success) {
                 toast({
                     title: data.payload?.message
                 })
+                sessionStorage.clear();
             } else {
                 toast({
                     title: data.payload?.message

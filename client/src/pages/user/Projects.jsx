@@ -7,9 +7,9 @@ import { useEffect, useState } from "react"
 import { useInView } from "react-intersection-observer"
 import { useDispatch, useSelector } from "react-redux"
 import { motion } from "framer-motion"
-import WrongPage from "./wrongPage"
 import ProjectImgDialog from "@/components/userView/ProjectImgDialog"
 import Footer from "@/components/userView/Footer"
+import WrongPage from "./WrongPage"
 
 const Projects = () => {
 

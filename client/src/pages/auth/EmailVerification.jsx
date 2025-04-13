@@ -10,7 +10,7 @@ import { useState } from "react"
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-const EmailVerify = () => {
+const EmailVerification = () => {
 
   const [sendOtp, setSendOtp] = useState(false);
   const [email, setEmail] = useState(null);
@@ -145,4 +145,4 @@ const EmailVerify = () => {
   )
 }
 
-export default EmailVerify
+export default EmailVerification

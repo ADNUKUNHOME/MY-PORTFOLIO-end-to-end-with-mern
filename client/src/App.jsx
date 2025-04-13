@@ -19,7 +19,7 @@ import { isAuthenticatedUser } from './store/auth-slice'
 import ResetPassword from './pages/auth/ResetPassword'
 import AdminDashboard from './pages/admin/Dashboard'
 import WrongPage from './pages/user/WrongPage'
-import EmailVerify from './pages/auth/EmailVerify'
+import EmailVerification from './pages/auth/EmailVerification'
 
 
 function App() {
@@ -45,7 +45,7 @@ function App() {
           <Route path='login' element={<Login />} />
           <Route path='register' element={<Register />} />
           <Route path='reset-password' element={<ResetPassword />} />
-          <Route path='verify-email' element={<EmailVerify />} />
+          <Route path='verify-email' element={<EmailVerification />} />
         </Route>
         <Route path='/user' element={
           <CheckAuth user={user} isAuthenticated={isAuthenticated}>

@@ -10,16 +10,16 @@ import Projects from './pages/user/Projects'
 import Skills from './pages/user/Skills'
 import BlogUser from './pages/user/BlogUser'
 import Contact from './pages/user/Contact'
-import EmailVerify from './pages/auth/emailVerify'
 import AdminLayout from './components/adminView/Layout'
 import AdminProjects from './pages/admin/Projects'
-import WrongPage from './pages/user/wrongPage'
 import { useDispatch, useSelector } from 'react-redux'
 import AdminContacts from './pages/admin/Contacts'
 import { useEffect } from 'react'
 import { isAuthenticatedUser } from './store/auth-slice'
 import ResetPassword from './pages/auth/ResetPassword'
 import AdminDashboard from './pages/admin/Dashboard'
+import WrongPage from './pages/user/WrongPage'
+import EmailVerify from './pages/auth/EmailVerify'
 
 function App() {
   

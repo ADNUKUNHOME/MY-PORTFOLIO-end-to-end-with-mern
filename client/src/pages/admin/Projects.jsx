@@ -7,6 +7,7 @@ import AddProjectDialog from "@/components/adminView/ProjectDialog"
 import { useDispatch, useSelector } from "react-redux"
 import { fetchAllProjects } from "@/store/admin-slice/projectSlice"
 import ProjectDetailsDialog from "@/components/adminView/ProjectDetailsDialog"
+import { Badge } from "@/components/ui/badge"
 
 
 const AdminProjects = () => {
@@ -42,7 +43,7 @@ const AdminProjects = () => {
       {
         projects && projects.length > 0 ?
           projects.map((project, index) => (
-            <div key={index} className="md:flex items-center justify-between w-full p-5">
+            <div key={index} className="md:flex items-center justify-between w-full p-5 mb-32">
               <Card className="w-full md:w-1/2 h-[400px] shadow-xl">
                 <CardContent >
                   <div className="flex justify-center object-contain h-[400px]">
@@ -57,19 +58,21 @@ const AdminProjects = () => {
                       <h1 className='font-bold text-3xl'>{project.title}</h1>
                       <Link className="flex items-center gap-1">
                         <Link2 className="text-sky-500 w-4 h-4" />
-                        <p className="font-bold text-sky-500">{project.deployUrl}</p>
+                        <a href={project.deployUrl} className="font-bold text-sky-500">{project.deployUrl}</a>
                       </Link>
-                      <p className='font-bold text-gray-500'>{project.description}</p>
-                      <div className="flex items-center gap-1">
+                      <p className='font-bold text-gray-500 max-h-[50px] overflow-hidden'>{project.description}</p>
+                      <div className="flex items-center gap-1 justify-center">
                         <MousePointer className="w-5 h-5 transform rotate-90 text-sky-500 fill-sky-500" />
-                        <p className="font-bold text-sm">{project.technologies}</p>
+                        <p className="font-bold text-sm">{project.technologies.map((tech, ind) => (
+                          <Badge className='m-2' variant='secondary' key={ind}>{tech}</Badge>
+                        ))}</p>
                       </div>
                     </div>
                     <Button onClick={() => setOpenDetailsDialog(true)}>View Details</Button>
                   </div>
                 </CardContent>
               </Card>
-              <ProjectDetailsDialog open={openDetailsDialog} setOpen={setOpenDetailsDialog} project={project} />
+              <ProjectDetailsDialog open={openDetailsDialog} setOpen={setOpenDetailsDialog} project={projects[index]} />
             </div>
           ))
           : null

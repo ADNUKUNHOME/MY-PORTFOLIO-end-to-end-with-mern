@@ -106,7 +106,7 @@ const UserHeader = () => {
                         </AlertDialogHeader>
                         <AlertDialogFooter>
                             <AlertDialogCancel>No</AlertDialogCancel>
-                            <AlertDialogAction className='bg-red-600 text-white'>Sure</AlertDialogAction>
+                            <AlertDialogAction className='bg-red-600 text-white' onClick={() => handleLogout()}>Sure</AlertDialogAction>
                         </AlertDialogFooter>
                     </AlertDialogContent>
                 </AlertDialog>
@@ -181,7 +181,7 @@ const UserHeader = () => {
                     </SheetTrigger >
                     <SheetContent side='left' className='w-full max-w-xs'>
                         <SheetTitle className='mb-7 font-bold'>Pages</SheetTitle>
-                        <Separator />
+                        <Separator className='mb-5' />
                         <MenuItems />
                         <RightHeaderContent />
                     </SheetContent>

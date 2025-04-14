@@ -55,7 +55,7 @@ const AdminNavbar = () => {
             <h3 className="font-bold text-lg text-gray-600 dark:text-white">PROJECTS</h3>
           </Link>
           <Link to='/admin/contacts' className="flex shadow-lg bg-gray-300 dark:bg-red-700 hover:bg-gray-200 dark:hover:bg-gray-400 items-center justify-center rounded-lg py-1">
-            <h3 className="font-bold text-lg text-gray-600 dark:text-white">SKILLS</h3>
+            <h3 className="font-bold text-lg text-gray-600 dark:text-white">CONTACTS</h3>
           </Link>
         </div>
       </div>

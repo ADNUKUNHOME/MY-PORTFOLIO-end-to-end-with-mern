@@ -1,7 +1,8 @@
+import ContactMessageDialog from "@/components/adminView/ContactDialog";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { getAllContacts } from "@/store/user/contactSlice";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 
@@ -9,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 const AdminContacts = () => {
 
+  const [openDialog, setOpenDialog] = useState(false);
   const {contact} = useSelector(state => state.contact);
   const dispatch = useDispatch();
 
@@ -35,7 +37,8 @@ useEffect(() => {
             <TableCell className="font-medium">{contact.name}</TableCell>
             <TableCell>{contact.email}</TableCell>
             <TableCell>{contact.subject}</TableCell>
-            <TableCell className="text-right"><Button>Message</Button></TableCell>
+            <TableCell className="text-right"><Button onClick={() => setOpenDialog(true)}>Message</Button></TableCell>
+            <ContactMessageDialog open={openDialog} setOpen={setOpenDialog} message={contact.message} />
           </TableRow>
         ))}
       </TableBody>

@@ -28,7 +28,7 @@ const HomeProjects = () => {
         </p>
 
         <div className="grid gap-8 grid-cols sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3" ref={ref}>
-          {projects.map((project, index) => (
+          {projects.slice(0, 3).map((project, index) => (
             <motion.div
               key={project._id}
               className="bg-white dark:bg-gray-900 rounded-2xl shadow-md overflow-hidden hover:shadow-xl border hover:border-sky-500 dark:hover:border-red-700 transition-all"

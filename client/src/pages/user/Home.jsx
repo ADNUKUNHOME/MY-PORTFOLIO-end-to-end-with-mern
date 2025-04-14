@@ -19,11 +19,7 @@ const Home = () => {
   const navigate = useNavigate();
   const [openDialog, setOpenDialog] = useState(false);
   const [selectedCard, setSelectedCard] = useState(null);
-  const { ref, inView } = useInView({
-    threshold: 0.2,
-    triggerOnce: false,
-  });
-
+  const { ref, inView } = useInView({ threshold: 0.2, triggerOnce: true });
   const [hasAnimated, setHasAnimated] = useState(false);
 
   useEffect(() => {
@@ -51,7 +47,7 @@ const Home = () => {
     <div className="flex flex-col min-h-screen bg-white dark:bg-slate-950">
 
       <div className="flex relative min-h-[300px] w-full items-center justify-between px-4 md:px-9 gap-5 mb-10">
-        <div className="flex">
+        <div className="flex flex-col justify-start">
           <div className="hidden md:flex flex-col">
             <div className="flex items-center justify-end min-w-[30px] transform rotate-12">
               <Gamepad2 className="w-8 h-8 text-white dark:text-white bg-sky-500 dark:bg-red-700 rounded-full shadow-xl font-bold text-lg" />
@@ -71,16 +67,15 @@ const Home = () => {
               </span>
             </p>
             <p className="text-3xl md:text-4xl lg:text-5xl font-extrabold mt-4 dark:text-white">
-              FULL STACK{" "} <span>DEVELOPER</span>
+              FULL STACK <span>DEVELOPER</span>
             </p>
             <p className="text-sm font-semibold md:font-semibold mt-4 text-gray-400 line-clamp-3">
               Specializing in building dynamic web applications with the{" "}
               <span className="font-extrabold text-gray-500 md:bg-sky-500 md:text-white md:font-bold rounded-full md:px-3 md:py-1 md:dark:bg-red-700 md:dark:text-white inline-block">
                 MERN Stack
-              </span>
-              .
+              </span>.
             </p>
-            <div className="flex gap-5 pt-4 items-center">
+            <div className="flex gap-5 pt-4 items-center flex-wrap">
               <Button
                 onClick={() => navigate("/user/contact")}
                 className="px-3 md:px-5 py-3 font-bold text-white dark:text-white bg-sky-500 dark:bg-red-700 rounded-2xl hover:bg-white dark:hover:bg-gray-600 hover:text-sky-500 dark:hover:text-red-700 shadow-xl border-none"
@@ -105,14 +100,36 @@ const Home = () => {
                 GitHub
               </a>
             </div>
+
+            {/* 👇 Mobile Avatar Section */}
+            <div className="flex md:hidden items-center justify-center mt-8">
+              <div className="overflow-hidden rounded-full bg-sky-500 dark:bg-red-700 shadow-2xl cursor-pointer">
+                <div
+                  className="relative rounded-full w-[200px] h-[200px]"
+                  onClick={() => setChangeImage((prev) => !prev)}
+                >
+                  <AnimatePresence mode="wait">
+                    <motion.img
+                      key={changeImage ? "blackAvatar" : "bigAvatar"}
+                      src={changeImage ? blackAvatar : bigAvatar}
+                      className="object-cover w-full h-full absolute"
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 1.1 }}
+                      transition={{ duration: 0.1, ease: "easeInOut" }}
+                    />
+                  </AnimatePresence>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-        {/* IMAGE SECTION */}
-        <div className="flex items-center justify-between pt-5 gap-10">
 
+        {/* 👇 Desktop Avatar Section */}
+        <div className="hidden md:flex items-center justify-between pt-5 gap-10">
           <div className="hidden md:flex flex-col items-center justify-between gap-20">
             <div className="flex">
-              <p className="absolute top-[40px] left-1/2 transform -traslate-x-1/2 text-[10px] inline-block py-1 px-2 font-bold bg-sky-500 dark:bg-red-700 text-white dark:text-white rounded-full shadow-xl rotate-[-10deg]" >WEB DEVELOPER</p>
+              <p className="absolute top-[40px] left-1/2 transform -translate-x-1/2 text-[10px] inline-block py-1 px-2 font-bold bg-sky-500 dark:bg-red-700 text-white dark:text-white rounded-full shadow-xl rotate-[-10deg]">WEB DEVELOPER</p>
             </div>
           </div>
 
@@ -134,27 +151,24 @@ const Home = () => {
               </AnimatePresence>
             </div>
           </div>
+
           <div className="hidden md:flex items-center">
             <div className="flex">
-              <BadgeCheck className="absolute bottom-[10px] right-[100px] transform transilate-x-1/2  text-sm w-6 h-6 md:text-lg md:w-8 md:h-8 text-white dark:text-white bg-sky-500 dark:bg-red-700 rounded-full shadow-xl" />
+              <BadgeCheck className="absolute bottom-[10px] right-[100px] text-sm w-6 h-6 md:w-8 md:h-8 text-white dark:text-white bg-sky-500 dark:bg-red-700 rounded-full shadow-xl" />
             </div>
           </div>
-
         </div>
       </div>
 
-      {/* {About Session} */}
-      <section className="flex flex-col bg-sky-500 dark:bg-red-700 min-h-[300px] px-14 md:px-28 ">
-
+      {/* About Section */}
+      <section className="flex flex-col bg-sky-500 dark:bg-red-700 min-h-[300px] px-14 md:px-28">
         <div className="flex flex-col w-full items-center justify-center py-8 text-white dark:text-white">
           <h1 className='font-extrabold text-3xl md:text-5xl'>About Me</h1>
           <Separator className='my-5' />
         </div>
 
-        <Carousel opts={{
-          align: "start",
-        }} >
-          <CarouselContent className='mb-8' ref={ref} >
+        <Carousel opts={{ align: "start" }}>
+          <CarouselContent className='mb-8' ref={ref}>
             {aboutMeCardContent.map((cardItem, index) => (
               <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
                 <motion.div
@@ -162,14 +176,12 @@ const Home = () => {
                   animate={hasAnimated ? { x: 0, opacity: 1 } : { opacity: 0 }}
                   transition={{ duration: 0.8, ease: "easeOut", delay: index * 0.1 }}
                 >
-                  <Card className="p-6 border rounded-xl h-[250px] bg-white dark:bg-gray-900 text-center 
-                            shadow-lg transition-all duration-300 hover:shadow-2xl 
-                            dark:hover:border-blue-500 hover:border-red-700"
-                    onClick={() => handleAboutCardDialog(cardItem.name)}>
+                  <Card
+                    className="p-6 border rounded-xl h-[250px] bg-white dark:bg-gray-900 text-center shadow-lg hover:shadow-2xl dark:hover:border-blue-500 hover:border-red-700"
+                    onClick={() => handleAboutCardDialog(cardItem.name)}
+                  >
                     <CardHeader className="flex flex-col items-center gap-3">
-                      <div className="text-4xl">
-                        {cardItem.icon}
-                      </div>
+                      <div className="text-4xl">{cardItem.icon}</div>
                       <CardTitle className="text-lg font-semibold hover:text-blue-600 dark:hover:text-red-700">
                         {cardItem.name}
                       </CardTitle>
@@ -189,21 +201,21 @@ const Home = () => {
         <div onClick={() => navigate('/user/about')} className="flex py-2 px-4 bg-white dark:white rounded-full text-sky-500 dark:text-red-700 hover:bg-sky-500 hover:text-white dark:hover:bg-red-800 dark:hover:text-white hover:shadow-xl border hover:border-white mb-8 items-center justify-center font-bold text-base md:text-xl">See More</div>
       </section>
 
-      {/* projects session */}
+      {/* Projects Section */}
       <section className="flex flex-col min-h-[300px] bg-white dark:bg-slate-950 py-10">
         <HomeProjects />
       </section>
 
-      {/* Skills session */}
+      {/* Skills Section */}
       <section className="flex flex-col min-h-[300px] bg-sky-500 dark:bg-red-700 py-10">
         <HomeSkills />
       </section>
 
-      {/* Footer session */}
-      <section className="flex flex-col  bg-sky-500 dark:bg-red-700">
+      {/* Footer Section */}
+      <section className="flex flex-col bg-sky-500 dark:bg-red-700">
         <Footer />
       </section>
-    </div >
+    </div>
   );
 };
 

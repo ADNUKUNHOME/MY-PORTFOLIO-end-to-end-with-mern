@@ -45,7 +45,19 @@ const Home = () => {
 
   return (
     <div className="flex flex-col min-h-screen bg-white dark:bg-slate-950">
-
+      <div className="w-full bg-yellow-400 dark:bg-yellow-600 text-black dark:text-white text-center px-4 py-2 font-medium">
+       🚨 I have created a <span className="font-bold">new portfolio</span>.  
+        Please visit 👉{" "}
+        <a
+           href="https://muhammadadnank.vercel.app"
+           target="_blank"
+           rel="noopener noreferrer"
+           className="underline text-blue-800 dark:text-blue-300 font-semibold"
+        >
+         New Portfolio
+       </a>{" "}
+         for the latest updates!
+      </div>
       <div className="flex relative min-h-[300px] w-full items-center justify-between px-4 md:px-9 gap-5 mb-10">
         <div className="flex flex-col justify-start">
           <div className="hidden md:flex flex-col">
@@ -220,3 +232,4 @@ const Home = () => {
 };
 
 export default Home;
+
